@@ -100,7 +100,7 @@ NsubjettinessProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup
   cout<<"Event no = "<<eventId<<endl;
 
  
-  edm::Handle<edm::View<pat::PackedCandidate> > PFCands;
+  edm::Handle<edm::View<reco::Candidate> > PFCands;
   iEvent.getByLabel(particleCollection,PFCands);
 
    
@@ -110,7 +110,7 @@ NsubjettinessProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup
 
 
   //PFcandidates are stored for reclustering   
-  for(edm::View<pat::PackedCandidate>::const_iterator iPFcand = PFCands->begin(); iPFcand != PFCands->end(); ++iPFcand){
+  for(edm::View<reco::Candidate>::const_iterator iPFcand = PFCands->begin(); iPFcand != PFCands->end(); ++iPFcand){
     
  // cout<<"px = "<<iPFcand->px()<<endl; 
 

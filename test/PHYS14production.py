@@ -144,7 +144,16 @@ process.TreeMaker2.VarsDouble.append("ak1p2sumJetMass(ak1p2Jets_sumJetMass)")
 
 # nsubjettiness stuff
 process.nSubjettiness = cms.EDProducer("NsubjettinessProducer",
-                                       jetCollection = cms.untracked.string("ak1p2Jets")
+                                       jetCollection = cms.untracked.string("ak1p2Jets"),
+                                       particleCollection = cms.untracked.string("chsPFCandidates"),
+                                       clusterRadius = cms.untracked.double(1.2),
+                                       trimPtFracMin = cms.untracked.double(0.05),
+                                       trimJets = cms.untracked.bool(True),
+                                       subjetPtCut = cms.untracked.double(30.),
+                                       subjetMassCut = cms.untracked.double(30.),
+                                       subjetRcut = cms.untracked.double(0.15),
+                                       subjetPtImbalance = cms.untracked.double(0.15),
+                                       debug = cms.untracked.bool(False)
                                        )
 
 process.TreeMaker2.VectorDouble.append("nSubjettiness:tau1(ak1p2Jets_tau1)")

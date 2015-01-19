@@ -9,10 +9,16 @@ parser.add_option("-n", "--nFiles", dest="nFiles", default=20,
 parser.add_option("-f","--filesConfig",dest="filesConfig", default="QCD_250HT500_LPCSUSYPAT",
                                        help="which config file to retrieve the full file list from (leave off _cff.py)")
 
+parser.add_option("-o","--outputDir",dest="ouputDir", default="",
+                                       help="path to ouput directory that root files will be stored in")
+
 parser.add_option("-s","--submit",dest="submit", default=False,action="store_true",
                                        help="submit jobs to condor once they are configured")
 
 (options, args) = parser.parse_args()
+
+if options.ouputDir=="":
+    raise Exception, 'No ouput directory (-o) specified'
 
 # varify specified options
 print "nFiles: ",options.nFiles
@@ -62,7 +68,7 @@ for iJob in range( nJobs ) :
             list += ',"'+process.source.fileNames[iFile+iJob*int( options.nFiles )]+'"'
 
     # replace placeholders in .tpl files
-    os.system("sed -e 's|<CMSSW_BASE>|'$CMSSW_BASE'|g' -e 's|<SAMPLE>|"+options.filesConfig+"|g' -e 's|<FILELIST>|"+list+"|g' -e 's|<INDEX>|"+str(iJob)+"|g' < run.tpl > run_"+options.filesConfig+"_"+str(iJob)+".sh")
+    os.system("sed -e 's|<CMSSW_BASE>|'$CMSSW_BASE'|g' -e 's|<OUTPUTDIR>|"+options.outputDir+"|g' -e 's|<SAMPLE>|"+options.filesConfig+"|g' -e 's|<FILELIST>|"+list+"|g' -e 's|<INDEX>|"+str(iJob)+"|g' < run.tpl > run_"+options.filesConfig+"_"+str(iJob)+".sh")
     os.system("sed -e 's|<INDEX>|"+str(iJob)+"|g' -e 's|<JOBNAME>|"+options.filesConfig+"|g' -e 's|<PROXY>|'`voms-proxy-info -path`'|g'< condor_submit.tpl > condor_submit_"+options.filesConfig+"_"+str(iJob))
 
     # submit jobs to condor, if -s was specified
