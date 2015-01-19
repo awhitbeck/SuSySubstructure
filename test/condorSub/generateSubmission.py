@@ -17,7 +17,7 @@ parser.add_option("-s","--submit",dest="submit", default=False,action="store_tru
 
 (options, args) = parser.parse_args()
 
-if options.ouputDir=="":
+if options.outputDir=="":
     raise Exception, 'No ouput directory (-o) specified'
 
 # varify specified options
