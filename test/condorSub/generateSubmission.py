@@ -9,7 +9,7 @@ parser.add_option("-n", "--nFiles", dest="nFiles", default=20,
 parser.add_option("-f","--filesConfig",dest="filesConfig", default="QCD_250HT500_LPCSUSYPAT",
                                        help="which config file to retrieve the full file list from (leave off _cff.py)")
 
-parser.add_option("-o","--outputDir",dest="ouputDir", default="",
+parser.add_option("-o","--outputDir",dest="outputDir", default="",
                                        help="path to ouput directory that root files will be stored in")
 
 parser.add_option("-s","--submit",dest="submit", default=False,action="store_true",
