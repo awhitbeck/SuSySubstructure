@@ -97,7 +97,7 @@ minDeltaPhiProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
     // = = = = = = = = = = = = = = = = = = = 
     // ================ compute DELTA-T =================
     double sum = 0.;
-    deltaPhi->push_back(999999.999999);
+    deltaPhi->push_back(-999999.999999);
 
     // loop of all other jets
     for(View<reco::Candidate>::const_iterator jJet = jetCands->begin(); jJet != jetCands->end(); ++jJet){
@@ -133,7 +133,7 @@ minDeltaPhiProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
     if( debug ) 
       std::cout << "Normalized dPhi: " << dphi << std::endl;
 
-    deltaPhi->push_back( dphi );
+    deltaPhi->back() = dphi ;
 
     // minimize...
     //if( dphi < deltaPhi->back() ) minDeltaPhi->back() = dphi ;

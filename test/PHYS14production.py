@@ -62,7 +62,7 @@ process.TreeMaker2.VectorInt.append("genParticles:parent(genParticles_parent)")
 ###############
 
 process.minDeltaPhi = cms.EDProducer("minDeltaPhiProducer",
-                                     jetCollection = cms.untracked.string("HTJets"),
+                                     jetCollection = cms.untracked.string("MHTJets"),
                                      metCollection = cms.untracked.string("slimmedMETs"),
                                      debug         = cms.untracked.bool(False)
                                      )
@@ -97,13 +97,6 @@ process.TreeMaker2.VectorDouble.append("photonProd:sigmaIetaIeta(photon_sigmaIet
 ####################
 # sum jet mass 
 ####################
-
-process.ak4Jets = cms.EDProducer("fourVectorProducer",
-                                 particleCollection = cms.untracked.string("MHTJets"),
-                                 debug = cms.untracked.bool(False)
-                                 )
-
-process.TreeMaker2.VectorTLorentzVector.append("ak4Jets(ak4Jets)")
 
 #ak12 jets
 from RecoJets.JetProducers.ak5PFJets_cfi import *
@@ -232,14 +225,20 @@ process.ak4Jets = cms.EDProducer("fourVectorProducer",
 
 process.TreeMaker2.VectorTLorentzVector.append("ak4Jets")
 
-process.TreeMaker2.VectorDouble.append("bDiscriminator(ak4Jets_CSVdisc)")
-process.TreeMaker2.VectorDouble.append("chargedHadronEnergyFraction(ak4Jets_chargeHadEfrac)")
-process.TreeMaker2.VectorDouble.append("neutralHadronEnergyFraction(ak4Jets_neutralHadEfrac)")
-process.TreeMaker2.VectorDouble.append("photonEnergyFraction(ak4Jets_photonEfrac)")
-process.TreeMaker2.VectorInt.append("chargedHadronMultiplicity(ak4Jets_chargedHadMult")
-process.TreeMaker2.VectorInt.append("neutralHadronMultiplicity(ak4Jets_neutralHadMult")
-process.TreeMaker2.VectorInt.append("photonMultiplicity(ak4Jets_photonMult")
-process.TreeMaker2.VectorInt.append("flavour(ak4Jets_flavor")
+process.TreeMaker2.VectorDouble.append("JetsProperties:bDiscriminator(ak4Jets_CSVdisc)")
+process.TreeMaker2.VectorDouble.append("JetsProperties:chargedHadronEnergyFraction(ak4Jets_chargeHadEfrac)")
+process.TreeMaker2.VectorDouble.append("JetsProperties:neutralHadronEnergyFraction(ak4Jets_neutralHadEfrac)")
+process.TreeMaker2.VectorDouble.append("JetsProperties:photonEnergyFraction(ak4Jets_photonEfrac)")
+#process.TreeMaker2.VarsDouble.append("JetsProperties:DeltaPhiN1(ak4Jets_DeltaPhiN1)")
+#process.TreeMaker2.VarsDouble.append("JetsProperties:DeltaPhiN2(ak4Jets_DeltaPhiN2)")
+#process.TreeMaker2.VarsDouble.append("JetsProperties:DeltaPhiN3(ak4Jets_DeltaPhiN3)")
+#process.TreeMaker2.VarsDouble.append("JetsProperties:minDeltaPhiN(ak4Jets_minDeltaPhiN)")
+
+
+process.TreeMaker2.VectorInt.append("JetsProperties:chargedHadronMultiplicity(ak4Jets_chargedHadMult)")
+process.TreeMaker2.VectorInt.append("JetsProperties:neutralHadronMultiplicity(ak4Jets_neutralHadMult)")
+process.TreeMaker2.VectorInt.append("JetsProperties:photonMultiplicity(ak4Jets_photonMult)")
+process.TreeMaker2.VectorInt.append("JetsProperties:flavour(ak4Jets_flavor)")
 
 ### ak4 gen jets
 process.ak4GenJets = cms.EDProducer("fourVectorProducer",
@@ -300,5 +299,5 @@ process.WriteTree = cms.Path( process.Baseline *
 #                               outputCommands = cms.untracked.vstring('drop *','keep *_*photon*_*_*','keep *_*Jets*_*_*'
 #                                                                      )
 #                               )
-#
+
 #process.outpath = cms.EndPath(process.out)
