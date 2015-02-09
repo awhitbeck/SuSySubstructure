@@ -45,8 +45,8 @@ NsubjettinessProducer::NsubjettinessProducer(const edm::ParameterSet& iConfig):
   clusterRadius(iConfig.getUntrackedParameter<double>("clusterRadius",1.2)),
   trimPtFracMin(iConfig.getUntrackedParameter<double>("trimPtFracMin",0.05)),
   trimJets(iConfig.getUntrackedParameter<bool>("trimJets",true)),
-  subjetPtCut(iConfig.getUntrackedParameter<double>("subjetPtCut",30.)),
-  subjetMassCut(iConfig.getUntrackedParameter<double>("subjetMassCut",30.)),
+  subjetPtCut(iConfig.getUntrackedParameter<double>("subjetPtCut",15.)),
+  subjetMassCut(iConfig.getUntrackedParameter<double>("subjetMassCut",10.)),
   subjetRcut(iConfig.getUntrackedParameter<double>("subjetRcut",0.15)),
   subjetPtImbalance(iConfig.getUntrackedParameter<double>("subjetPtImbalance",.15)),
   debug(iConfig.getUntrackedParameter<bool>("debug",true))
@@ -101,8 +101,8 @@ NsubjettinessProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup
   using namespace std;  
 
 
-  edm::EventID eventId = iEvent.id();
-  cout<<"Event no = "<<eventId<<endl;
+  //edm::EventID eventId = iEvent.id();
+  //cout<<"Event no = "<<eventId<<endl;
 
  
   edm::Handle<edm::View<reco::Candidate> > PFCands;
@@ -152,12 +152,15 @@ NsubjettinessProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup
     //defines cluster sequence for reclustring on the  k12 Jets  
     fastjet::ClusterSequence cs_ak12(particles, Jetdefak12);
     ak12Jets = sorted_by_pt(cs_ak12.inclusive_jets());
-//    cout<<"number of clusterd ak12 Jets untrimmed= "<<ak12Jets.size()<<endl;
+    //cout<<"number of clusterd ak12 Jets untrimmed= "<<ak12Jets.size()<<endl;
 
 
 
   
    fastjet::Filter trimmer1(fastjet::Filter(fastjet::JetDefinition(fastjet::kt_algorithm,0.2),fastjet::SelectorPtFractionMin(0.05)));
+
+
+   //cout<<"mass cut = "<<subjetMassCut<<endl;
 
    fastjet::contrib::SubjetCountingCA subjetCounter(subjetMassCut,subjetPtImbalance,subjetRcut,subjetPtCut);  
 
@@ -187,7 +190,7 @@ NsubjettinessProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup
         ak12pseudoSubjets = subjetCounter.getSubjets(transformedJet) ;
 
 
-       cout<<"no of subjets = "<<ak12pseudoSubjets.size()<<endl;
+     //  cout<<"no of subjets = "<<ak12pseudoSubjets.size()<<endl;
         NumSubjets->push_back(ak12pseudoSubjets.size());
         tau1->push_back( nSub1_b1KT(transformedJet) );
         tau2->push_back( nSub2_b1KT(transformedJet) );

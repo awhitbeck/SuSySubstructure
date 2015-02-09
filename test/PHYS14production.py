@@ -105,13 +105,6 @@ process.ak4Jets = cms.EDProducer("fourVectorProducer",
 
 process.TreeMaker2.VectorTLorentzVector.append("ak4Jets(ak4Jets)")
 
-process.ak4GenJets = cms.EDProducer("fourVectorProducer",
-                                    particleCollection = cms.untracked.string("slimmedGenJets"),
-                                    debug = cms.untracked.bool(False)
-                                    )
-
-process.TreeMaker2.VectorTLorentzVector.append("ak4GenJets(ak4GenJets)")
-
 #ak12 jets
 from RecoJets.JetProducers.ak5PFJets_cfi import *
 
@@ -160,6 +153,7 @@ process.TreeMaker2.VectorDouble.append("nSubjettiness:tau1(ak1p2Jets_tau1)")
 process.TreeMaker2.VectorDouble.append("nSubjettiness:tau2(ak1p2Jets_tau2)")
 process.TreeMaker2.VectorDouble.append("nSubjettiness:tau3(ak1p2Jets_tau3)")
 process.TreeMaker2.VectorDouble.append("nSubjettiness:tau4(ak1p2Jets_tau4)")
+process.TreeMaker2.VectorInt.append("nSubjettiness:NumSubjets(ak1p2Jets_nSubjets)")
 
 process.ak1p2JetsNoTrim = ak5PFJets.clone(src = cms.InputTag("chsPFCandidates"),
                                           rParam = cms.double(1.2),
@@ -227,21 +221,25 @@ process.TreeMaker2.VarsDouble.append("fattenedJetsPt20:sumJetMass(ak1p2JetsPt20R
 process.TreeMaker2.VectorTLorentzVector.append("fattenedJetsPt30(ak1p2JetsPt30Reclust)")
 process.TreeMaker2.VarsDouble.append("fattenedJetsPt30:sumJetMass(ak1p2JetsPt30Reclust_sumJetMass)")
 
+# ==================
 # ak4 jets
+# ==================
 
-process.ak4JetsPt10Selector = cms.EDProducer("SubJetSelection",
-                                           JetTag = cms.InputTag("slimmedJets"),
-                                           MinPt  = cms.double(10),
-                                           MaxEta = cms.double(5.0),
-                                           applyLooseID = cms.untracked.bool(True)
-                                           )
-
-process.ak4JetsPt10 = cms.EDProducer("fourVectorProducer",
-                                   particleCollection = cms.untracked.string("ak4JetsPt10Selector"),
+process.ak4Jets = cms.EDProducer("fourVectorProducer",
+                                   particleCollection = cms.untracked.string("slimmedJets"),
                                    debug = cms.untracked.bool(False)
                                    )
 
-process.TreeMaker2.VectorTLorentzVector.append("ak4JetsPt10")
+process.TreeMaker2.VectorTLorentzVector.append("ak4Jets")
+
+process.TreeMaker2.VectorDouble.append("bDiscriminator(ak4Jets_CSVdisc)")
+process.TreeMaker2.VectorDouble.append("chargedHadronEnergyFraction(ak4Jets_chargeHadEfrac)")
+process.TreeMaker2.VectorDouble.append("neutralHadronEnergyFraction(ak4Jets_neutralHadEfrac)")
+process.TreeMaker2.VectorDouble.append("photonEnergyFraction(ak4Jets_photonEfrac)")
+process.TreeMaker2.VectorInt.append("chargedHadronMultiplicity(ak4Jets_chargedHadMult")
+process.TreeMaker2.VectorInt.append("neutralHadronMultiplicity(ak4Jets_neutralHadMult")
+process.TreeMaker2.VectorInt.append("photonMultiplicity(ak4Jets_photonMult")
+process.TreeMaker2.VectorInt.append("flavour(ak4Jets_flavor")
 
 ### ak4 gen jets
 process.ak4GenJets = cms.EDProducer("fourVectorProducer",
@@ -277,7 +275,6 @@ process.WriteTree = cms.Path( process.Baseline *
                               process.photonProd *
                               process.chsPFCandidates *
                               process.ak4Jets *
-                              process.ak4GenJets *
                               process.ak1p2Jets * 
                               process.ak1p2sumJetMass * 
                               process.nSubjettiness *
@@ -289,9 +286,8 @@ process.WriteTree = cms.Path( process.Baseline *
                               process.fattenedJetsPt30 * 
                               process.fattenedJetsPt20 * 
                               process.fattenedJetsPt15 *
-                              process.ak4JetsPt10Selector *
-                              process.ak4JetsPt10 *
                               process.ak4GenJets *
+                              process.JetsProperties *
                               
                               process.TreeMaker2 
                               )
