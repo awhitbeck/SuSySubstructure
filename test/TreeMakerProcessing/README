@@ -8,3 +8,8 @@
 > python doTreeMakerPostProc.py --run
 # optionally "--sample SAMPLENAME"
 > python doTreeMakerPostProc.py --add
+
+
+# At the top of the "main" module, you can configure a few things:
+1. input directory
+2. output directory
