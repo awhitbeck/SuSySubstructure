@@ -1,0 +1,10 @@
+# main code: doTreeMakerPostProc.py
+# slimming script: SlimAndSkim.py
+
+# Code finds all of the files in a directory, slims, skims and adds a cross-section branch
+# 2 steps: "--run" creates a whole bunch of condoor scripts and submits them
+#   	   "--add" hadds all the slimmed/skimmed files together 
+
+> python doTreeMakerPostProc.py --run
+# optionally "--sample SAMPLENAME"
+> python doTreeMakerPostProc.py --add
