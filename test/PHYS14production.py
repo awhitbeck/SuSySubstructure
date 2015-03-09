@@ -27,16 +27,11 @@ process.load('Configuration/StandardSequences/FrontierConditions_GlobalTag_cff')
 from AllHadronicSUSY.TreeMaker.makeTreeFromMiniAOD_cff import makeTreeTreeFromMiniADO
 makeTreeTreeFromMiniADO(process,
                         outFileName="ReducedSelection",
-                        NJetsMin=options.minNjets,
-                        HTMin=options.minHT,
-                        MHTMin=options.minMHT,
                         reportEveryEvt=options.reportEvery,
                         testFileName="",
-                         Global_Tag="PHYS14_25_V2::All",
-                        MC=True,
-                        QCD=True,
-                        LostLepton=True,
-                        debug = False,
+                        Global_Tag="PHYS14_25_V2::All",
+                        lostlepton=False,
+                        gammajets=False,
                         numProcessedEvt=options.numEvents
                         )
 
@@ -80,7 +75,6 @@ process.photonProd = cms.EDProducer("PhotonIDisoProducer",
                                     debug = cms.untracked.bool(False)
                                     )
 
-#process.TreeMaker2.debug = True
 process.TreeMaker2.VectorTLorentzVector.append("photonProd")
 process.TreeMaker2.VectorDouble.append("photonProd:isEB(photon_isEB)")
 process.TreeMaker2.VectorDouble.append("photonProd:genMatched(photon_genMatched)")
@@ -229,16 +223,68 @@ process.TreeMaker2.VectorDouble.append("JetsProperties:bDiscriminator(ak4Jets_CS
 process.TreeMaker2.VectorDouble.append("JetsProperties:chargedHadronEnergyFraction(ak4Jets_chargeHadEfrac)")
 process.TreeMaker2.VectorDouble.append("JetsProperties:neutralHadronEnergyFraction(ak4Jets_neutralHadEfrac)")
 process.TreeMaker2.VectorDouble.append("JetsProperties:photonEnergyFraction(ak4Jets_photonEfrac)")
-#process.TreeMaker2.VarsDouble.append("JetsProperties:DeltaPhiN1(ak4Jets_DeltaPhiN1)")
-#process.TreeMaker2.VarsDouble.append("JetsProperties:DeltaPhiN2(ak4Jets_DeltaPhiN2)")
-#process.TreeMaker2.VarsDouble.append("JetsProperties:DeltaPhiN3(ak4Jets_DeltaPhiN3)")
-#process.TreeMaker2.VarsDouble.append("JetsProperties:minDeltaPhiN(ak4Jets_minDeltaPhiN)")
-
-
 process.TreeMaker2.VectorInt.append("JetsProperties:chargedHadronMultiplicity(ak4Jets_chargedHadMult)")
 process.TreeMaker2.VectorInt.append("JetsProperties:neutralHadronMultiplicity(ak4Jets_neutralHadMult)")
 process.TreeMaker2.VectorInt.append("JetsProperties:photonMultiplicity(ak4Jets_photonMult)")
-process.TreeMaker2.VectorInt.append("JetsProperties:flavour(ak4Jets_flavor)")
+process.TreeMaker2.VectorInt.append("JetsProperties:flavor(ak4Jets_flavor)")
+
+# ==========================
+# jets post photon cleaning
+# ==========================
+
+process.HTJetsNoPhotons = cms.EDProducer("CleanPATJetProducer",
+                                            photonCollection = cms.untracked.InputTag("slimmedPhotons"),
+                                            jetCollection = cms.untracked.string("HTJets"), 
+                                            rhoCollection = cms.untracked.InputTag("fixedGridRhoFastjetAll"), 
+                                            debug = cms.untracked.bool(False)
+                                            )
+
+process.MHTJetsNoPhotons = cms.EDProducer("CleanPATJetProducer",
+                                            photonCollection = cms.untracked.InputTag("slimmedPhotons"),
+                                            jetCollection = cms.untracked.string("MHTJets"), 
+                                            rhoCollection = cms.untracked.InputTag("fixedGridRhoFastjetAll"), 
+                                            debug = cms.untracked.bool(False)
+                                            )
+
+process.htNoPhotons = cms.EDProducer("HTDouble",
+                                     JetTag = cms.InputTag("HTJetsNoPhotons")
+                                     )
+
+process.TreeMaker2.VarsDouble.append("htNoPhotons(HTnoPhotons)")
+
+process.mhtNoPhotons = cms.EDProducer("MhtDouble",
+                                      JetTag = cms.InputTag("MHTJetsNoPhotons")
+                                      )
+
+process.TreeMaker2.VarsDouble.append("mhtNoPhotons(MHTnoPhotons)")
+
+process.deltaPhiNoPhotons = cms.EDProducer("DeltaPhiDouble",
+                                      MHTJets = cms.InputTag("MHTJetsNoPhotons"),
+                                      DeltaPhiJets = cms.InputTag("MHTJetsNoPhotons")
+                                      )
+
+process.TreeMaker2.VarsDouble.append("deltaPhiNoPhotons:DeltaPhi1(DeltaPhi1noPhotons)")
+process.TreeMaker2.VarsDouble.append("deltaPhiNoPhotons:DeltaPhi2(DeltaPhi2noPhotons)")
+process.TreeMaker2.VarsDouble.append("deltaPhiNoPhotons:DeltaPhi3(DeltaPhi3noPhotons)")
+
+process.nJetsNoPhotons = cms.EDProducer("NJetInt",
+                                      JetTag = cms.InputTag("HTJetsNoPhotons")
+                                      )
+
+process.TreeMaker2.VarsInt.append("nJetsNoPhotons(NJetsNoPhotons)")
+
+process.metNoPhotons = cms.EDProducer("METDouble",
+                                      METTag   = cms.InputTag("slimmedMETs"),
+                                      JetTag   = cms.InputTag("MHTJetsNoPhotons"),
+                                      cleanTag = cms.untracked.InputTag("HTJetsNoPhotons","bestPhoton")
+                                      )
+
+process.TreeMaker2.VarsDouble.append("metNoPhotons:DeltaPhiN1(DeltaPhiN1noPhotons)")
+process.TreeMaker2.VarsDouble.append("metNoPhotons:DeltaPhiN2(DeltaPhiN2noPhotons)")
+process.TreeMaker2.VarsDouble.append("metNoPhotons:DeltaPhiN3(DeltaPhiN3noPhotons)")
+process.TreeMaker2.VarsDouble.append("metNoPhotons:minDeltaPhiN(minDeltaPhiNnoPhotons)")
+process.TreeMaker2.VarsDouble.append("metNoPhotons:Pt(METnoPhotonsPt)")
+process.TreeMaker2.VarsDouble.append("metNoPhotons:Phi(METnoPhotonsPhi)")
 
 ### ak4 gen jets
 process.ak4GenJets = cms.EDProducer("fourVectorProducer",
@@ -268,7 +314,7 @@ if options.files!=[] :
 ##  DEFINE SCHEDULE
 
 process.WriteTree = cms.Path( process.Baseline * 
-                              process.LostLepton *
+                              #process.LostLepton *
                               process.minDeltaPhi *
                               process.genParticles * 
                               process.photonProd *
@@ -286,8 +332,15 @@ process.WriteTree = cms.Path( process.Baseline *
                               process.fattenedJetsPt20 * 
                               process.fattenedJetsPt15 *
                               process.ak4GenJets *
-                              process.JetsProperties *
-                              
+                              #process.JetsProperties *
+                              process.HTJetsNoPhotons * 
+                              process.MHTJetsNoPhotons * 
+                              process.htNoPhotons * 
+                              process.mhtNoPhotons * 
+                              process.deltaPhiNoPhotons * 
+                              process.nJetsNoPhotons * 
+                              process.metNoPhotons *
+
                               process.TreeMaker2 
                               )
 
