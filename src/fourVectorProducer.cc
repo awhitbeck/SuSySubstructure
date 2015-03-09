@@ -36,7 +36,7 @@
 #include <vector>
 
 fourVectorProducer::fourVectorProducer(const edm::ParameterSet& iConfig):
-  particleCollection(iConfig.getUntrackedParameter<std::string>("particleCollection")),
+  particleCollection(iConfig.getUntrackedParameter<edm::InputTag>("particleCollection")),
   debug(iConfig.getUntrackedParameter<bool>("debug",true))
 {
   produces< std::vector< TLorentzVector > >(""); 

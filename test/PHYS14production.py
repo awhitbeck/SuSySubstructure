@@ -115,7 +115,7 @@ process.ak1p2sumJetMass = cms.EDProducer("sumJetMassProducer",
                                          )
 
 process.ak1p2Jets4Vec = cms.EDProducer("fourVectorProducer",
-                                       particleCollection = cms.untracked.string("ak1p2Jets"),
+                                       particleCollection = cms.untracked.InputTag("ak1p2Jets"),
                                        debug = cms.untracked.bool(False)
                                        )
 
@@ -157,7 +157,7 @@ process.ak1p2NoTrimSumJetMass = cms.EDProducer("sumJetMassProducer",
                                          )
 
 process.ak1p2JetsNoTrim4Vec = cms.EDProducer("fourVectorProducer",
-                                       particleCollection = cms.untracked.string("ak1p2JetsNoTrim"),
+                                       particleCollection = cms.untracked.InputTag("ak1p2JetsNoTrim"),
                                        debug = cms.untracked.bool(False)
                                        )
 
@@ -213,7 +213,7 @@ process.TreeMaker2.VarsDouble.append("fattenedJetsPt30:sumJetMass(ak1p2JetsPt30R
 # ==================
 
 process.ak4Jets = cms.EDProducer("fourVectorProducer",
-                                   particleCollection = cms.untracked.string("slimmedJets"),
+                                   particleCollection = cms.untracked.InputTag("slimmedJets"),
                                    debug = cms.untracked.bool(False)
                                    )
 
@@ -245,6 +245,13 @@ process.MHTJetsNoPhotons = cms.EDProducer("CleanPATJetProducer",
                                             rhoCollection = cms.untracked.InputTag("fixedGridRhoFastjetAll"), 
                                             debug = cms.untracked.bool(False)
                                             )
+
+process.bestPhoton = cms.EDProducer("fourVectorProducer",
+                                   particleCollection = cms.untracked.InputTag("HTJetsNoPhotons","bestPhoton"),
+                                   debug = cms.untracked.bool(False)
+                                   )
+
+process.TreeMaker2.VectorTLorentzVector.append("bestPhoton(bestPhoton)")
 
 process.htNoPhotons = cms.EDProducer("HTDouble",
                                      JetTag = cms.InputTag("HTJetsNoPhotons")
@@ -288,7 +295,7 @@ process.TreeMaker2.VarsDouble.append("metNoPhotons:Phi(METnoPhotonsPhi)")
 
 ### ak4 gen jets
 process.ak4GenJets = cms.EDProducer("fourVectorProducer",
-                                   particleCollection = cms.untracked.string("slimmedGenJets"),
+                                   particleCollection = cms.untracked.InputTag("slimmedGenJets"),
                                    debug = cms.untracked.bool(False)
                                    )
 
@@ -340,6 +347,7 @@ process.WriteTree = cms.Path( process.Baseline *
                               process.deltaPhiNoPhotons * 
                               process.nJetsNoPhotons * 
                               process.metNoPhotons *
+                              process.bestPhoton *
 
                               process.TreeMaker2 
                               )

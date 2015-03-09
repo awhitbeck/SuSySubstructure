@@ -27,7 +27,7 @@ private:
   // ---------- configurable data ----------------
   // --------------- members ---------------------
   
-  std::string particleCollection;     // name of particle collection
+  edm::InputTag particleCollection;     // name of particle collection
   bool        debug;
 };
 
