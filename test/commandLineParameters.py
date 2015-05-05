@@ -13,6 +13,12 @@ options.register ('inputFilesConfig',
                   VarParsing.VarParsing.varType.string,          # string, int, or float
                   "config file for inputs, automatically appended with _cff.py")
 
+options.register ('weightLable',
+                  "", # default value
+                  VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                  VarParsing.VarParsing.varType.string,          # string, int, or float
+                  "string which distinguishes samples for adding weights...")
+
 options.register ('outputFile',
                   "T1tttt", # default value
                   VarParsing.VarParsing.multiplicity.singleton, # singleton or list

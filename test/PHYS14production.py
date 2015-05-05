@@ -24,16 +24,26 @@ process.load('Configuration/StandardSequences/FrontierConditions_GlobalTag_cff')
 # tree maker
 ###############
 
-from AllHadronicSUSY.TreeMaker.makeTreeFromMiniAOD_cff import makeTreeTreeFromMiniADO
-makeTreeTreeFromMiniADO(process,
-                        outFileName="ReducedSelection",
-                        reportEveryEvt=options.reportEvery,
-                        testFileName="",
-                        Global_Tag="PHYS14_25_V2::All",
-                        lostlepton=False,
-                        gammajets=False,
-                        numProcessedEvt=options.numEvents
-                        )
+from AllHadronicSUSY.TreeMaker.makeTreeFromMiniAOD_cff import makeTreeTreeFromMiniAOD
+makeTreeTreeFromMiniAOD(process,
+                    outFileName="ReducedSelection",
+                    reportEveryEvt=options.reportEvery,
+                    testFileName="",
+                    Global_Tag="PHYS14_25_V2::All",
+                    lostlepton=False,
+                    gammajets=False,
+                    numProcessedEvt=options.numEvents
+                    )
+
+######################
+#   edit weight stuff
+######################
+
+from configureWeightProducer import *
+process.WeightProducer2 = configureWeightProducer(options.inputFilesConfig)
+process.WeightProducer2.Lumi                       = cms.double(4000)
+process.WeightProducer2.PU                         = cms.int32(0) # PU S10 3 for S10 2 for S7
+process.WeightProducer2.FileNamePUDataDistribution = cms.string("NONE")
 
 ##################################
 # DEFINE MODULES FOR ANALYSIS
@@ -161,8 +171,8 @@ process.ak1p2JetsNoTrim4Vec = cms.EDProducer("fourVectorProducer",
                                        debug = cms.untracked.bool(False)
                                        )
 
-process.TreeMaker2.VectorTLorentzVector.append("ak1p2JetsNoTrim4Vec(ak1p2JetsNoTrim)")
-process.TreeMaker2.VarsDouble.append("ak1p2NoTrimSumJetMass(ak1p2JetsNoTrim_sumJetMass)")
+#process.TreeMaker2.VectorTLorentzVector.append("ak1p2JetsNoTrim4Vec(ak1p2JetsNoTrim)")
+#process.TreeMaker2.VarsDouble.append("ak1p2NoTrimSumJetMass(ak1p2JetsNoTrim_sumJetMass)")
 
 #reclustered ak12 jets
 
@@ -203,21 +213,35 @@ process.fattenedJetsPt30 = cms.EDProducer("JetFatteningProducer",
 
 process.TreeMaker2.VectorTLorentzVector.append("fattenedJetsPt15(ak1p2JetsPt15Reclust)")
 process.TreeMaker2.VarsDouble.append("fattenedJetsPt15:sumJetMass(ak1p2JetsPt15Reclust_sumJetMass)")
-process.TreeMaker2.VectorTLorentzVector.append("fattenedJetsPt20(ak1p2JetsPt20Reclust)")
-process.TreeMaker2.VarsDouble.append("fattenedJetsPt20:sumJetMass(ak1p2JetsPt20Reclust_sumJetMass)")
-process.TreeMaker2.VectorTLorentzVector.append("fattenedJetsPt30(ak1p2JetsPt30Reclust)")
-process.TreeMaker2.VarsDouble.append("fattenedJetsPt30:sumJetMass(ak1p2JetsPt30Reclust_sumJetMass)")
+#process.TreeMaker2.VectorTLorentzVector.append("fattenedJetsPt20(ak1p2JetsPt20Reclust)")
+#process.TreeMaker2.VarsDouble.append("fattenedJetsPt20:sumJetMass(ak1p2JetsPt20Reclust_sumJetMass)")
+#process.TreeMaker2.VectorTLorentzVector.append("fattenedJetsPt30(ak1p2JetsPt30Reclust)")
+#process.TreeMaker2.VarsDouble.append("fattenedJetsPt30:sumJetMass(ak1p2JetsPt30Reclust_sumJetMass)")
 
 # ==================
 # ak4 jets
 # ==================
 
 process.ak4Jets = cms.EDProducer("fourVectorProducer",
-                                   particleCollection = cms.untracked.InputTag("slimmedJets"),
+                                   particleCollection = cms.untracked.InputTag("GoodJets"),
                                    debug = cms.untracked.bool(False)
                                    )
 
+process.ak4JetsRaw = cms.EDProducer("fourVectorProducer",
+                                    particleCollection = cms.untracked.InputTag("slimmedJets"),
+                                    debug = cms.untracked.bool(False)
+                                    )
+
+from AllHadronicSUSY.Utils.jetproperties_cfi import jetproperties
+process.JetsPropertiesRaw = jetproperties.clone(JetTag  = cms.InputTag('slimmedJets'),
+                                                BTagInputTag	        = cms.string('combinedInclusiveSecondaryVertexV2BJetTags'),
+                                                METTag  = cms.InputTag("slimmedMETs"),
+                                                )
+
+
 process.TreeMaker2.VectorTLorentzVector.append("ak4Jets")
+process.TreeMaker2.VectorTLorentzVector.append("ak4JetsRaw")
+process.TreeMaker2.VectorInt.append("GoodJets:passJetID(ak4Jets_passedJetID)")
 
 process.TreeMaker2.VectorDouble.append("JetsProperties:bDiscriminator(ak4Jets_CSVdisc)")
 process.TreeMaker2.VectorDouble.append("JetsProperties:chargedHadronEnergyFraction(ak4Jets_chargeHadEfrac)")
@@ -228,30 +252,47 @@ process.TreeMaker2.VectorInt.append("JetsProperties:neutralHadronMultiplicity(ak
 process.TreeMaker2.VectorInt.append("JetsProperties:photonMultiplicity(ak4Jets_photonMult)")
 process.TreeMaker2.VectorInt.append("JetsProperties:flavor(ak4Jets_flavor)")
 
+process.TreeMaker2.VectorDouble.append("JetsPropertiesRaw:bDiscriminator(ak4JetsRaw_CSVdisc)")
+process.TreeMaker2.VectorDouble.append("JetsPropertiesRaw:chargedHadronEnergyFraction(ak4JetsRaw_chargeHadEfrac)")
+process.TreeMaker2.VectorDouble.append("JetsPropertiesRaw:neutralHadronEnergyFraction(ak4JetsRaw_neutralHadEfrac)")
+process.TreeMaker2.VectorDouble.append("JetsPropertiesRaw:photonEnergyFraction(ak4JetsRaw_photonEfrac)")
+process.TreeMaker2.VectorInt.append("JetsPropertiesRaw:chargedHadronMultiplicity(ak4JetsRaw_chargedHadMult)")
+process.TreeMaker2.VectorInt.append("JetsPropertiesRaw:neutralHadronMultiplicity(ak4JetsRaw_neutralHadMult)")
+process.TreeMaker2.VectorInt.append("JetsPropertiesRaw:photonMultiplicity(ak4JetsRaw_photonMult)")
+process.TreeMaker2.VectorInt.append("JetsPropertiesRaw:flavor(ak4JetsRaw_flavor)")
+
 # ==========================
 # jets post photon cleaning
 # ==========================
 
 process.HTJetsNoPhotons = cms.EDProducer("CleanPATJetProducer",
-                                            photonCollection = cms.untracked.InputTag("slimmedPhotons"),
-                                            jetCollection = cms.untracked.string("HTJets"), 
-                                            rhoCollection = cms.untracked.InputTag("fixedGridRhoFastjetAll"), 
-                                            debug = cms.untracked.bool(False)
-                                            )
+                                         photonCollection = cms.untracked.InputTag("slimmedPhotons"),
+                                         jetCollection = cms.untracked.string("HTJets"), 
+                                         rhoCollection = cms.untracked.InputTag("fixedGridRhoFastjetAll"), 
+                                         debug = cms.untracked.bool(False)
+                                         )
 
 process.MHTJetsNoPhotons = cms.EDProducer("CleanPATJetProducer",
-                                            photonCollection = cms.untracked.InputTag("slimmedPhotons"),
-                                            jetCollection = cms.untracked.string("MHTJets"), 
-                                            rhoCollection = cms.untracked.InputTag("fixedGridRhoFastjetAll"), 
-                                            debug = cms.untracked.bool(False)
-                                            )
+                                          photonCollection = cms.untracked.InputTag("slimmedPhotons"),
+                                          jetCollection = cms.untracked.string("MHTJets"), 
+                                          rhoCollection = cms.untracked.InputTag("fixedGridRhoFastjetAll"), 
+                                          debug = cms.untracked.bool(False)
+                                          )
 
 process.bestPhoton = cms.EDProducer("fourVectorProducer",
-                                   particleCollection = cms.untracked.InputTag("HTJetsNoPhotons","bestPhoton"),
-                                   debug = cms.untracked.bool(False)
-                                   )
+                                    particleCollection = cms.untracked.InputTag("HTJetsNoPhotons","bestPhoton"),
+                                    debug = cms.untracked.bool(False)
+                                    )
 
 process.TreeMaker2.VectorTLorentzVector.append("bestPhoton(bestPhoton)")
+process.TreeMaker2.VarsInt.append("HTJetsNoPhotons:NumPhotons(Photons)")
+
+process.HTJetsFourVec = cms.EDProducer("fourVectorProducer",
+                                       particleCollection = cms.untracked.InputTag("HTJetsNoPhotons"),
+                                       debug = cms.untracked.bool(False)
+                                       )
+
+process.TreeMaker2.VectorTLorentzVector.append("HTJetsFourVec(ak4JetsNoPhotons)")
 
 process.htNoPhotons = cms.EDProducer("HTDouble",
                                      JetTag = cms.InputTag("HTJetsNoPhotons")
@@ -301,6 +342,23 @@ process.ak4GenJets = cms.EDProducer("fourVectorProducer",
 
 process.TreeMaker2.VectorTLorentzVector.append("ak4GenJets")
 
+######################
+# event filters
+######################
+
+process.RA2eventFilter = cms.EDFilter("RA2eventFilter",
+                                      HTCollection = cms.untracked.InputTag("htNoPhotons"),
+                                      minHT = cms.untracked.double(500.),
+                                      MHTCollection = cms.untracked.InputTag("mhtNoPhotons"),
+                                      minMHT = cms.untracked.double(200.),
+                                      NJetsCollection = cms.untracked.InputTag("nJetsNoPhotons"),
+#                                      minNJets = cms.untracked.int(4),
+                                      BTagsCollection = cms.untracked.InputTag("BTags"),
+#                                      minBTags = cms.untracked.int(0),
+                                      minDeltaPhiNCollection = cms.untracked.InputTag("metNoPhotons","minDeltaPhiN"),
+                                      debug = cms.untracked.bool(False)
+                                      )
+
 ## CONFIGURE TFILESERVICE
 
 process.TFileService = cms.Service("TFileService",
@@ -323,23 +381,7 @@ if options.files!=[] :
 process.WriteTree = cms.Path( process.Baseline * 
                               #process.LostLepton *
                               process.minDeltaPhi *
-                              process.genParticles * 
-                              process.photonProd *
-                              process.chsPFCandidates *
-                              process.ak4Jets *
-                              process.ak1p2Jets * 
-                              process.ak1p2sumJetMass * 
-                              process.nSubjettiness *
-                              process.ak1p2Jets4Vec *
-                              process.ak1p2JetsNoTrim *
-                              process.ak1p2NoTrimSumJetMass * 
-                              process.ak1p2JetsNoTrim4Vec *
-                              process.slimmedJetsPt15 * 
-                              process.fattenedJetsPt30 * 
-                              process.fattenedJetsPt20 * 
-                              process.fattenedJetsPt15 *
-                              process.ak4GenJets *
-                              #process.JetsProperties *
+                              process.JetsPropertiesRaw *
                               process.HTJetsNoPhotons * 
                               process.MHTJetsNoPhotons * 
                               process.htNoPhotons * 
@@ -348,6 +390,27 @@ process.WriteTree = cms.Path( process.Baseline *
                               process.nJetsNoPhotons * 
                               process.metNoPhotons *
                               process.bestPhoton *
+                              
+                              #process.RA2eventFilter *
+
+                              process.genParticles * 
+                              process.photonProd *
+                              process.chsPFCandidates *
+                              process.ak4Jets *
+                              process.ak4JetsRaw *
+                              process.ak1p2Jets * 
+                              process.ak1p2sumJetMass * 
+                              process.nSubjettiness *
+                              process.ak1p2Jets4Vec *
+                              #process.ak1p2JetsNoTrim *
+                              #process.ak1p2NoTrimSumJetMass * 
+                              #process.ak1p2JetsNoTrim4Vec *
+                              process.slimmedJetsPt15 * 
+                              #process.fattenedJetsPt30 * 
+                              #process.fattenedJetsPt20 * 
+                              #process.fattenedJetsPt15 *
+                              process.ak4GenJets *
+                              process.HTJetsFourVec *
 
                               process.TreeMaker2 
                               )
