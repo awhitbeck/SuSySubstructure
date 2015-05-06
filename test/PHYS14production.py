@@ -24,8 +24,8 @@ process.load('Configuration/StandardSequences/FrontierConditions_GlobalTag_cff')
 # tree maker
 ###############
 
-from AllHadronicSUSY.TreeMaker.makeTreeFromMiniAOD_cff import makeTreeTreeFromMiniAOD
-makeTreeTreeFromMiniAOD(process,
+from AllHadronicSUSY.TreeMaker.makeTreeFromMiniAOD_cff import makeTreeFromMiniAOD
+makeTreeFromMiniAOD(process,
                     outFileName="ReducedSelection",
                     reportEveryEvt=options.reportEvery,
                     testFileName="",
@@ -35,15 +35,33 @@ makeTreeTreeFromMiniAOD(process,
                     numProcessedEvt=options.numEvents
                     )
 
+# drop all recoCand stuff and replace with 4-vectors
+# --------------------------------------------------
+
+process.TreeMaker2.RecoCandVector = cms.vstring()
+
+process.goodElectrons4Vec = cms.EDProducer("fourVectorProducer",
+                                           particleCollection = cms.untracked.InputTag("LeptonsNew","IdIsoElectron"),
+                                           debug = cms.untracked.bool(False)
+                                           )
+
+process.goodMuons4Vec = cms.EDProducer("fourVectorProducer",
+                                           particleCollection = cms.untracked.InputTag("LeptonsNew","IdIsoMuon"),
+                                           debug = cms.untracked.bool(False)
+                                           )
+
+process.TreeMaker2.VectorTLorentzVector.append("goodMuons4Vec(Muons)")
+process.TreeMaker2.VectorTLorentzVector.append("goodElectrons4Vec(Electrons)")
+
 ######################
 #   edit weight stuff
 ######################
 
-from configureWeightProducer import *
-process.WeightProducer2 = configureWeightProducer(options.inputFilesConfig)
-process.WeightProducer2.Lumi                       = cms.double(4000)
-process.WeightProducer2.PU                         = cms.int32(0) # PU S10 3 for S10 2 for S7
-process.WeightProducer2.FileNamePUDataDistribution = cms.string("NONE")
+#from configureWeightProducer import *
+#process.WeightProducer2 = configureWeightProducer(options.inputFilesConfig)
+#process.WeightProducer2.Lumi                       = cms.double(4000)
+#process.WeightProducer2.PU                         = cms.int32(0) # PU S10 3 for S10 2 for S7
+#process.WeightProducer2.FileNamePUDataDistribution = cms.string("NONE")
 
 ##################################
 # DEFINE MODULES FOR ANALYSIS
@@ -213,10 +231,10 @@ process.fattenedJetsPt30 = cms.EDProducer("JetFatteningProducer",
 
 process.TreeMaker2.VectorTLorentzVector.append("fattenedJetsPt15(ak1p2JetsPt15Reclust)")
 process.TreeMaker2.VarsDouble.append("fattenedJetsPt15:sumJetMass(ak1p2JetsPt15Reclust_sumJetMass)")
-#process.TreeMaker2.VectorTLorentzVector.append("fattenedJetsPt20(ak1p2JetsPt20Reclust)")
-#process.TreeMaker2.VarsDouble.append("fattenedJetsPt20:sumJetMass(ak1p2JetsPt20Reclust_sumJetMass)")
-#process.TreeMaker2.VectorTLorentzVector.append("fattenedJetsPt30(ak1p2JetsPt30Reclust)")
-#process.TreeMaker2.VarsDouble.append("fattenedJetsPt30:sumJetMass(ak1p2JetsPt30Reclust_sumJetMass)")
+process.TreeMaker2.VectorTLorentzVector.append("fattenedJetsPt20(ak1p2JetsPt20Reclust)")
+process.TreeMaker2.VarsDouble.append("fattenedJetsPt20:sumJetMass(ak1p2JetsPt20Reclust_sumJetMass)")
+process.TreeMaker2.VectorTLorentzVector.append("fattenedJetsPt30(ak1p2JetsPt30Reclust)")
+process.TreeMaker2.VarsDouble.append("fattenedJetsPt30:sumJetMass(ak1p2JetsPt30Reclust_sumJetMass)")
 
 # ==================
 # ak4 jets
@@ -380,6 +398,8 @@ if options.files!=[] :
 
 process.WriteTree = cms.Path( process.Baseline * 
                               #process.LostLepton *
+                              process.goodElectrons4Vec * 
+                              process.goodMuons4Vec *  
                               process.minDeltaPhi *
                               process.JetsPropertiesRaw *
                               process.HTJetsNoPhotons * 
@@ -406,9 +426,9 @@ process.WriteTree = cms.Path( process.Baseline *
                               #process.ak1p2NoTrimSumJetMass * 
                               #process.ak1p2JetsNoTrim4Vec *
                               process.slimmedJetsPt15 * 
-                              #process.fattenedJetsPt30 * 
-                              #process.fattenedJetsPt20 * 
-                              #process.fattenedJetsPt15 *
+                              process.fattenedJetsPt30 * 
+                              process.fattenedJetsPt20 * 
+                              process.fattenedJetsPt15 *
                               process.ak4GenJets *
                               process.HTJetsFourVec *
 
