@@ -259,7 +259,7 @@ process.JetsPropertiesRaw = jetproperties.clone(JetTag  = cms.InputTag('slimmedJ
 
 process.TreeMaker2.VectorTLorentzVector.append("ak4Jets")
 process.TreeMaker2.VectorTLorentzVector.append("ak4JetsRaw")
-process.TreeMaker2.VectorInt.append("GoodJets:passJetID(ak4Jets_passedJetID)")
+#process.TreeMaker2.VectorInt.append("GoodJets:passJetID(ak4Jets_passedJetID)")
 
 process.TreeMaker2.VectorDouble.append("JetsProperties:bDiscriminator(ak4Jets_CSVdisc)")
 process.TreeMaker2.VectorDouble.append("JetsProperties:chargedHadronEnergyFraction(ak4Jets_chargeHadEfrac)")
