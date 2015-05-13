@@ -51,8 +51,9 @@ process.goodMuons4Vec = cms.EDProducer("fourVectorProducer",
                                            )
 
 process.TreeMaker2.VectorTLorentzVector.append("goodMuons4Vec(Muons)")
+process.TreeMaker2.VectorInt.append("LeptonsNew:MuonCharge(MuonCharge)")
 process.TreeMaker2.VectorTLorentzVector.append("goodElectrons4Vec(Electrons)")
-
+process.TreeMaker2.VectorInt.append("LeptonsNew:ElectronCharge(ElectronCharge)")
 
 ##################################
 # DEFINE MODULES FOR ANALYSIS
