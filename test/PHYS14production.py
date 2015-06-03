@@ -32,7 +32,8 @@ makeTreeFromMiniAOD(process,
                     Global_Tag="PHYS14_25_V2::All",
                     lostlepton=False,
                     gammajets=False,
-                    numProcessedEvt=options.numEvents
+                    numProcessedEvt=options.numEvents,
+                    doZinv=True
                     )
 
 # drop all recoCand stuff and replace with 4-vectors
@@ -58,6 +59,12 @@ process.TreeMaker2.VectorInt.append("LeptonsNew:ElectronCharge(ElectronCharge)")
 ##################################
 # DEFINE MODULES FOR ANALYSIS
 ##################################
+
+###############
+# rho stuff
+###############
+
+process.TreeMaker2.VarsDouble.append("fixedGridRhoFastjetAll(rho)")
 
 ###############
 # gen stuff
@@ -181,6 +188,7 @@ if options.files!=[] :
 ##  DEFINE SCHEDULE
 
 process.WriteTree = cms.Path( process.Baseline * 
+                              process.AdditionalSequence *
                               process.goodElectrons4Vec * 
                               process.goodMuons4Vec *  
 
@@ -194,7 +202,6 @@ process.WriteTree = cms.Path( process.Baseline *
                               process.ak4Jets *
                               process.ak4JetsRaw *
                               process.ak4GenJets *
-                              process.HTJetsFourVec *
 
                               process.SumJetMass * 
 
