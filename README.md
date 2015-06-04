@@ -63,4 +63,5 @@ voms-proxy-init -voms cms
 </pre>
 
 Things to do for batch submission:
+
 1. get code working for check for and resubmitting failed jobs
