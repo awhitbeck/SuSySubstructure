@@ -19,6 +19,7 @@ cd SuSySubstructure
 bash retrieveFastJetTools.sh
 cd ../../
 scram b -j8
+wget http://people.physics.tamu.edu/aperloff/CMS_JEC/PHYS14_V4/PHYS14_V4_MC.db AWhitbeck/SuSySubstructure/test/.
 </pre>
 
 ## Input files
@@ -45,3 +46,21 @@ So, an example of how to run the code would be:
 cmsRun PHYS14production.py inputFilesConfig=PHYS14.SMS-T1tttt_2J_mGl-1200_mLSP-800_Tune4C_13TeV-madgraph-tauola outputFile=T1tttt_mGl-1200_mLSP-800
 </pre>
 
+## Submit Production to Condor (@ LPC)
+
+There are also utilities set up to run over all of the PHYS14 samples and save the output tree to your some specified area (eos is strongly recommended!).  The test/condor_sub directory contains all of the relevant scripts. If you copy this to another directory and run the [looper.sh](https://github.com/awhitbeck/SuSySubstructure/blob/June4_2015/test/condorSub/looper.sh) script, it will submit one job per file to condor for all of the relevant PHYS14 samples. Example:
+
+<pre>
+cp -r condor_sub myProduction
+cd myProduction
+bash looper.sh /eos/uscms/store/user/YOURUSERNAME/myProduction/
+</pre>
+
+The job open the files over xrootd, so be sure that the output directory already exists and that you have a valid grid proxy:
+
+<pre>
+voms-proxy-init -voms cms
+</pre>
+
+Things to do for batch submission:
+1. get code working for check for and resubmitting failed jobs
