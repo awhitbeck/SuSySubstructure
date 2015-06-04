@@ -1,74 +1,47 @@
-CODE FOR STUDYING SUBSTRUCTURE VARIABLE
-TO BE APPLIED TO SUSY ANALYSES.
+# Overview of the SuSySubstructure Package
+
+This package is intended to study various substructure techniques for gluino searches.  For ease 
+of use, it is used in conjuction with the [TreeMaker](https://github.com/TreeMaker/TreeMaker/) package employed by the RA2/b analysis.  
 
 
-#### for running on CSA14 samples -- all those in python/13TeV*
-cmsrel CMSSW_7_0_6_patch1
-cd CMSSW_7_0_6_patch1/src
+## Setup Instruction
+
+<verbarim>
+setenv SCRAM_ARCH slc6_amd64_gcc491
+cmsrel CMSSW_7_4_1
+cd CMSSW_7_4_1/src
 cmsenv
-
-#### for running on PHYS14 samples -- all those in python/PHYS14
-cmsrel CMSSW_7_2_0
-cd CMSSW_7_2_0/src
-cmsenv
-
-####################
-# git instructions #
-####################
-
-git clone https://github.com/adrager/RA2_2014 .
-git checkout --track origin/work
-git clone https://github.com/awhitbeck/SuSySubstructure.git AWhitbeck/SuSySubstructure
-cd AWhitbeck/SuSySubstructure
-./retrieveFastJetTools.sh
+git clone https://github.com/awhitbeck/TreeMaker.git -b CMSSW_7_2_X .
+mkdir AWhitbeck
+cd AWhitbeck
+git clone https://github.com/awhitbeck/SuSySubstructure.git
+cd SuSySubstructure
+bash retrieveFastJetTools.sh
 cd ../../
-#compile with
 scram b -j8
+</verbatim>
 
-###########################
-# Main analyzer -- 13 TeV  #
-##########################
+## Input files
 
-# The main analyzer is written to run over 
-# the miniAOD data tier
-# https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookMiniAOD
+A number of config fragments
+are stored in the python directory for files list for entire samples.  For PHYS14 samples, see list of config files [here](https://github.com/awhitbeck/SuSySubstructure/tree/master/python/PHYS14).
+There are also some private samples that have been produced for more detailed studies.  The corresonding
+config files are [here](https://github.com/awhitbeck/SuSySubstructure/tree/June4_2015/python/privateSamples).
 
-# to run locally 
+## Relevant Code
 
-cmsRun miniAOD_test.py < options >
+For producing analysis trees, the config file, PHYS14production.py, should be used.  This config file also also
+for command line arguments to be passed along.  The relevant command line arguments are:
 
-# note options can be found with --help
-# i.e. python SuSySubstructureAnalysis.py --help
+| argument name     | default       | usage example        | comments        |
+| ----------------- |:-------------:| --------------------:| ---------------:| 
+| inputFilesConfig  | ""            | intputFilesConfig=PHYS14.SMS-T1tttt_2J_mGl-1200_mLSP-800_Tune4C_13TeV-madgraph-tauola | config file for inputs, automatically appended with _cff.py |
+| outputFile        | "T1tttt"      | outputFile=T1tttt    | root file for outputs, automatically appended with _RA2AnalysisTree.root |
+| files             | ""            | files=file:myMINIAODfile.root | This can be used for comma separated lists of files. |
 
-# Example:
-# running over T5tttt sample 
+So, an example of how to run the code would be:
 
-cmsRun SuSySubstructureAnalysis.py inputFilesConfig=PHYS14.GJets_HT-200to400_Tune4C_13TeV-madgraph-tauola outputFile=GJets_HT-200to400_Tune4C_13TeV-madgraph-tauola
+<verbatim>
+cmsRun PHYS14production.py inputFilesConfig=PHYS14.SMS-T1tttt_2J_mGl-1200_mLSP-800_Tune4C_13TeV-madgraph-tauola outputFile=T1tttt_mGl-1200_mLSP-800
+</verbatim>
 
-# root files with flat tree will be saved
-
-###########################
-# Main analyzer -- 8 TeV  #
-##########################
-
-# The main analyzer is written to run over 
-# the LPC SUSY PAT-tuples:
-# https://twiki.cern.ch/twiki/bin/viewauth/CMS/LPCSusyDataset
-
-# to run locally 
-
-cmsRun SuSySubstructureAnalysis.py < options >
-
-# note options can be found with --help
-# i.e. python SuSySubstructureAnalysis.py --help
-
-# Example:
-# running over T5tttt sample 
-
-cmsRun SuSySubstructureAnalysis.py inputFilesConfig=SMS-T5tttt_mGo-1000_mStop-250_mLSP_50_8TeV_LPCSUSYPAT outputFile=SMS-T5tttt_mGo-1000_mStop-250_mLSP_50_8TeV_LPCSUSYPAT numEvents=100
-
-# root files with flat tree will be saved
-
-# coming soon...
-
-# detailed instructions on how to submit many jobs to condor...
