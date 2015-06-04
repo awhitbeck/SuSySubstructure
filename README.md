@@ -6,7 +6,7 @@ of use, it is used in conjuction with the [TreeMaker](https://github.com/TreeMak
 
 ## Setup Instruction
 
-<verbarim>
+<pre>
 setenv SCRAM_ARCH slc6_amd64_gcc491
 cmsrel CMSSW_7_4_1
 cd CMSSW_7_4_1/src
@@ -19,7 +19,7 @@ cd SuSySubstructure
 bash retrieveFastJetTools.sh
 cd ../../
 scram b -j8
-</verbatim>
+</pre>
 
 ## Input files
 
@@ -41,7 +41,7 @@ for command line arguments to be passed along.  The relevant command line argume
 
 So, an example of how to run the code would be:
 
-<verbatim>
+<pre>
 cmsRun PHYS14production.py inputFilesConfig=PHYS14.SMS-T1tttt_2J_mGl-1200_mLSP-800_Tune4C_13TeV-madgraph-tauola outputFile=T1tttt_mGl-1200_mLSP-800
-</verbatim>
+</pre>
 
