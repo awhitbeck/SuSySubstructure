@@ -11,7 +11,7 @@ setenv SCRAM_ARCH slc6_amd64_gcc491
 cmsrel CMSSW_7_4_1
 cd CMSSW_7_4_1/src
 cmsenv
-git clone https://github.com/awhitbeck/TreeMaker.git -b CMSSW_7_4_X .
+git clone https://github.com/awhitbeck/TreeMaker.git -b CMSSW_7_4_1 .
 mkdir AWhitbeck
 cd AWhitbeck
 git clone https://github.com/awhitbeck/SuSySubstructure.git
