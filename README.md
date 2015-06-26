@@ -15,11 +15,12 @@ git clone https://github.com/awhitbeck/TreeMaker.git -b CMSSW_7_4_1 .
 mkdir AWhitbeck
 cd AWhitbeck
 git clone https://github.com/awhitbeck/SuSySubstructure.git
+git checkout June4_2015
 cd SuSySubstructure
 bash retrieveFastJetTools.sh
 cd ../../
 scram b -j8
-wget http://people.physics.tamu.edu/aperloff/CMS_JEC/PHYS14_V4/PHYS14_V4_MC.db AWhitbeck/SuSySubstructure/test/.
+wget http://people.physics.tamu.edu/aperloff/CMS_JEC/PHYS14_V4/PHYS14_V4_MC.db  ; cp PHYS14_V4_MC.db AWhitbeck/SuSySubstructure/test/.
 </pre>
 
 ## Input files
