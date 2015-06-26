@@ -30,16 +30,17 @@ makeTreeFromMiniAOD(process,
                     reportEveryEvt=options.reportEvery,
                     testFileName="",
                     Global_Tag="PHYS14_25_V2::All",
-                    lostlepton=False,
-                    gammajets=False,
+                    lostlepton=True,
+                    tagandprobe=True,
                     numProcessedEvt=options.numEvents,
                     doZinv=True
                     )
 
 # drop all recoCand stuff and replace with 4-vectors
 # --------------------------------------------------
-
+print "check"
 process.TreeMaker2.VarsRecoCand = []
+print "mate"
 
 process.goodElectrons4Vec = cms.EDProducer("fourVectorProducer",
                                            particleCollection = cms.untracked.InputTag("LeptonsNew","IdIsoElectron"),
@@ -78,13 +79,6 @@ process.genParticles = cms.EDProducer("genParticlesProducer",
 process.TreeMaker2.VectorTLorentzVector.append("genParticles(genParticles)")
 process.TreeMaker2.VectorInt.append("genParticles:PDGid(genParticles_PDGid)")
 #process.TreeMaker2.VectorInt.append("genParticles:parent(genParticles_parent)")
-
-###############
-# photon stuff
-###############
-
-from AWhitbeck.SuSySubstructure.photonStudies_cff import * 
-photonSetup(process) ## define relevant modules and a sequence to be used, process.photonSeq
 
 # ==================
 # fat jet stuff 
@@ -192,8 +186,6 @@ process.WriteTree = cms.Path( process.Baseline *
                               process.goodElectrons4Vec * 
                               process.goodMuons4Vec *  
 
-                              process.photonSeq *
-                              
                               #process.RA2eventFilter *
 
                               process.genParticles * 
