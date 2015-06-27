@@ -30,8 +30,8 @@ makeTreeFromMiniAOD(process,
                     reportEveryEvt=options.reportEvery,
                     testFileName="",
                     Global_Tag="PHYS14_25_V2::All",
-                    lostlepton=False,
-                    gammajets=False,
+                    lostlepton=True,
+                    tagandprobe=True,
                     numProcessedEvt=options.numEvents,
                     doZinv=True
                     )
@@ -65,26 +65,6 @@ process.TreeMaker2.VectorInt.append("LeptonsNew:ElectronCharge(ElectronCharge)")
 ###############
 
 process.TreeMaker2.VarsDouble.append("fixedGridRhoFastjetAll(rho)")
-
-###############
-# gen stuff
-###############
-
-process.genParticles = cms.EDProducer("genParticlesProducer",
-                                      genCollection = cms.untracked.InputTag("prunedGenParticles"),
-                                      debug = cms.untracked.bool(False)
-                                      )
-
-process.TreeMaker2.VectorTLorentzVector.append("genParticles(genParticles)")
-process.TreeMaker2.VectorInt.append("genParticles:PDGid(genParticles_PDGid)")
-#process.TreeMaker2.VectorInt.append("genParticles:parent(genParticles_parent)")
-
-###############
-# photon stuff
-###############
-
-from AWhitbeck.SuSySubstructure.photonStudies_cff import * 
-photonSetup(process) ## define relevant modules and a sequence to be used, process.photonSeq
 
 # ==================
 # fat jet stuff 
@@ -192,11 +172,7 @@ process.WriteTree = cms.Path( process.Baseline *
                               process.goodElectrons4Vec * 
                               process.goodMuons4Vec *  
 
-                              process.photonSeq *
-                              
                               #process.RA2eventFilter *
-
-                              process.genParticles * 
 
                               #process.JetsPropertiesRaw *
                               process.ak4Jets *
