@@ -6,6 +6,9 @@ then
 fi
 
 outputDir=$1
+KEEPTAR=$2
+
+./FScheck.sh "$KEEPTAR"
 
 #python generateSubmission.py -n 1 -s -f PHYS14.GJets_HT-200to400_Tune4C_13TeV-madgraph-tauola -o $outputDir
 python generateSubmission.py -n 1 -s -f PHYS14.GJets_HT-600toInf_Tune4C_13TeV-madgraph-tauola -o $outputDir

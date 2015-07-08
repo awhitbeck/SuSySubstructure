@@ -6,29 +6,26 @@ of use, it is used in conjuction with the [TreeMaker](https://github.com/TreeMak
 
 ## Setup Instruction
 
-<pre>
+```
 setenv SCRAM_ARCH slc6_amd64_gcc491
 cmsrel CMSSW_7_4_1
 cd CMSSW_7_4_1/src
 cmsenv
 git clone https://github.com/awhitbeck/TreeMaker.git -b CMSSW_7_4_1 .
-mkdir AWhitbeck
-cd AWhitbeck
-git clone https://github.com/awhitbeck/SuSySubstructure.git
-git checkout June4_2015
-cd SuSySubstructure
-bash retrieveFastJetTools.sh
+git clone https://github.com/awhitbeck/SuSySubstructure.git -b synch_June26_2015 AWhitbeck/SuSySubstructure
+cd AWhitbeck/SuSySubstructure
+./retrieveFastJetTools.sh
 cd ../../
-scram b -j8
-wget http://people.physics.tamu.edu/aperloff/CMS_JEC/PHYS14_V4/PHYS14_V4_MC.db  ; cp PHYS14_V4_MC.db AWhitbeck/SuSySubstructure/test/.
-</pre>
+scram b -j 8
+wget http://people.physics.tamu.edu/aperloff/CMS_JEC/PHYS14_V4/PHYS14_V4_MC.db -P AWhitbeck/SuSySubstructure/test/
+```
 
 ## Input files
 
 A number of config fragments
-are stored in the python directory for files list for entire samples.  For PHYS14 samples, see list of config files [here](https://github.com/awhitbeck/SuSySubstructure/tree/master/python/PHYS14).
-There are also some private samples that have been produced for more detailed studies.  The corresonding
-config files are [here](https://github.com/awhitbeck/SuSySubstructure/tree/June4_2015/python/privateSamples).
+are stored in the python directory for files list for entire samples.  For PHYS14 samples, see list of config files [here](./python/PHYS14/).
+There are also some private samples that have been produced for more detailed studies.  The corresponding
+config files are [here](./python/privateSamples/).
 
 ## Relevant Code
 
@@ -49,19 +46,23 @@ cmsRun PHYS14production.py inputFilesConfig=PHYS14.SMS-T1tttt_2J_mGl-1200_mLSP-8
 
 ## Submit Production to Condor (@ LPC)
 
-There are also utilities set up to run over all of the PHYS14 samples and save the output tree to your some specified area (eos is strongly recommended!).  The test/condor_sub directory contains all of the relevant scripts. If you copy this to another directory and run the [looper.sh](https://github.com/awhitbeck/SuSySubstructure/blob/June4_2015/test/condorSub/looper.sh) script, it will submit one job per file to condor for all of the relevant PHYS14 samples. Example:
+There are also utilities set up to run over all of the PHYS14 samples and save the output tree to your specified area (eos is required!).
+The [test/condorSub](./test/condorSub) directory contains all of the relevant scripts.
+If you copy this to another directory and run the [looper.sh](./test/condorSub/looper.sh) script, it will submit one job per file to condor for all of the relevant PHYS14 samples. Example:
 
 <pre>
-cp -r condor_sub myProduction
+cp -r condorSub myProduction
 cd myProduction
-bash looper.sh /eos/uscms/store/user/YOURUSERNAME/myProduction/
+./looper.sh root://cmseos.fnal.gov//store/user/YOURUSERNAME/myProduction/
 </pre>
 
-The job open the files over xrootd, so be sure that the output directory already exists and that you have a valid grid proxy:
-
-<pre>
-voms-proxy-init -voms cms
-</pre>
+The jobs open the files over xrootd, so [looper.sh](./test/condorSub/looper.sh) will check that you have a valid grid proxy.
+It will also make a tarball of the current CMSSW working directory to send to the worker node.
+If you want to reuse an existing CMSSW tarball (no important changes have been made since the last time you submitted jobs),
+there is an extra argument:
+```
+./looper.sh root://cmseos.fnal.gov//store/user/YOURUSERNAME/myProduction/ keep
+```
 
 Things to do for batch submission:
 
