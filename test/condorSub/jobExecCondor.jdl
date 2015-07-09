@@ -1,0 +1,16 @@
+universe = vanilla
+Executable = jobExecCondor.sh
+Requirements = OpSys == "LINUX" && (Arch != "DUMMY" )
+request_disk = 1000000
+request_memory = 199
+Should_Transfer_Files = YES
+WhenToTransferOutput = ON_EXIT_OR_EVICT
+Transfer_Input_Files = jobExecCondor.sh, ../PHYS14production.py, ../commandLineParameters.py, CMSSWVER.tar.gz
+Output = SAMPLE_$(Cluster).stdout
+Error = SAMPLE_$(Cluster).stderr
+Log = SAMPLE_$(Cluster).condor
+notification = Error
+notify_user = awhitbe1@FNAL.GOV
+x509userproxy = $ENV(X509_USER_PROXY)
+Arguments = CMSSWVER OUTDIR SAMPLE FILELIST
+Queue 1
