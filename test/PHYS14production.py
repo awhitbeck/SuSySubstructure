@@ -31,9 +31,10 @@ makeTreeFromMiniAOD(process,
                     testFileName="",
                     Global_Tag="PHYS14_25_V2::All",
                     lostlepton=True,
-                    tagandprobe=True,
+                    tagandprobe=False,
                     numProcessedEvt=options.numEvents,
-                    doZinv=True
+                    doZinv=True,
+                    debugtracks=False,
                     )
 
 # drop all recoCand stuff and replace with 4-vectors
@@ -66,19 +67,6 @@ process.TreeMaker2.VectorInt.append("LeptonsNew:ElectronCharge(ElectronCharge)")
 ###############
 
 process.TreeMaker2.VarsDouble.append("fixedGridRhoFastjetAll(rho)")
-
-###############
-# gen stuff
-###############
-
-process.genParticles = cms.EDProducer("genParticlesProducer",
-                                      genCollection = cms.untracked.InputTag("prunedGenParticles"),
-                                      debug = cms.untracked.bool(False)
-                                      )
-
-process.TreeMaker2.VectorTLorentzVector.append("genParticles(genParticles)")
-process.TreeMaker2.VectorInt.append("genParticles:PDGid(genParticles_PDGid)")
-#process.TreeMaker2.VectorInt.append("genParticles:parent(genParticles_parent)")
 
 # ==================
 # fat jet stuff 
@@ -178,6 +166,10 @@ if options.files!=[] :
     readFiles.extend( options.files )
     process.source = cms.Source("PoolSource",
                                 fileNames = readFiles )
+
+process.maxEvents = cms.untracked.PSet(
+    input = cms.untracked.int32(options.numEvents)
+)
 
 ##  DEFINE SCHEDULE
 
