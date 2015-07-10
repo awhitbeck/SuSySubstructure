@@ -8,11 +8,11 @@ of use, it is used in conjuction with the [TreeMaker](https://github.com/TreeMak
 
 ```
 setenv SCRAM_ARCH slc6_amd64_gcc491
-cmsrel CMSSW_7_4_1
-cd CMSSW_7_4_1/src
+cmsrel CMSSW_7_2_3_patch1
+cd CMSSW_7_2_3_patch1/src
 cmsenv
-git clone https://github.com/awhitbeck/TreeMaker.git -b CMSSW_7_4_1 .
-git clone https://github.com/awhitbeck/SuSySubstructure.git -b synch_June26_2015 AWhitbeck/SuSySubstructure
+git clone git@github.com:awhitbeck/TreeMaker.git -b CMSSW_7_2_X .
+git clone git@github.com:awhitbeck/SuSySubstructure.git -b synch_June26_2015 AWhitbeck/SuSySubstructure
 cd AWhitbeck/SuSySubstructure
 ./retrieveFastJetTools.sh
 cd ../../
