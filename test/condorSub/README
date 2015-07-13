@@ -1,6 +1,6 @@
 #to submit jobs:
 
-make sure that the .tpl files are configured to run/copy the desired config file.
+make sure that the jobExecCondor* files are configured to run/copy the desired config file.
 
 use generateSubmission.py to automatically generate bash scripts and condor configs for submission:
 
