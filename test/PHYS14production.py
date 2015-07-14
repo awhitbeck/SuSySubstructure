@@ -35,13 +35,13 @@ makeTreeFromMiniAOD(process,
                     numProcessedEvt=options.numEvents,
                     doZinv=True,
                     debugtracks=False,
+                    geninfo=False,
+                    filtertag="RECO"
                     )
 
 # drop all recoCand stuff and replace with 4-vectors
 # --------------------------------------------------
-print "check"
 process.TreeMaker2.VarsRecoCand = []
-print "mate"
 
 process.goodElectrons4Vec = cms.EDProducer("fourVectorProducer",
                                            particleCollection = cms.untracked.InputTag("LeptonsNew","IdIsoElectron"),
@@ -72,8 +72,8 @@ process.TreeMaker2.VarsDouble.append("fixedGridRhoFastjetAll(rho)")
 # fat jet stuff 
 # ==================
 
-from AWhitbeck.SuSySubstructure.fatJetStudies_cff import *
-fatJetSetup(process) ## define relevant modules and a sequence to be used, process.SumJetMass
+#from AWhitbeck.SuSySubstructure.fatJetStudies_cff import *
+#fatJetSetup(process) ## define relevant modules and a sequence to be used, process.SumJetMass
 
 # ==================
 # ak4 jets
@@ -88,14 +88,6 @@ process.ak4JetsRaw = cms.EDProducer("fourVectorProducer",
                                     particleCollection = cms.untracked.InputTag("slimmedJets"),
                                     debug = cms.untracked.bool(False)
                                     )
-
-#from AllHadronicSUSY.Utils.jetproperties_cfi import jetproperties
-#process.JetsPropertiesRaw = jetproperties.clone(JetTag  = cms.InputTag('slimmedJets'),
-#                                                BTagInputTag	        = cms.string('combinedInclusiveSecondaryVertexV2BJetTags'),
-
-#                                                METTag  = cms.InputTag("slimmedMETs"),
-#                                                )
-
 
 process.TreeMaker2.VectorTLorentzVector.append("ak4Jets")
 process.TreeMaker2.VectorTLorentzVector.append("ak4JetsRaw")
@@ -116,22 +108,13 @@ process.TreeMaker2.VectorInt.append("JetsProperties:neutralHadronMultiplicity(ak
 process.TreeMaker2.VectorInt.append("JetsProperties:photonMultiplicity(ak4Jets_photonMult)")
 process.TreeMaker2.VectorInt.append("JetsProperties:flavor(ak4Jets_flavor)")
 
-#process.TreeMaker2.VectorDouble.append("JetsPropertiesRaw:bDiscriminator(ak4JetsRaw_CSVdisc)")
-#process.TreeMaker2.VectorDouble.append("JetsPropertiesRaw:chargedHadronEnergyFraction(ak4JetsRaw_chargeHadEfrac)")
-#process.TreeMaker2.VectorDouble.append("JetsPropertiesRaw:neutralHadronEnergyFraction(ak4JetsRaw_neutralHadEfrac)")
-#process.TreeMaker2.VectorDouble.append("JetsPropertiesRaw:photonEnergyFraction(ak4JetsRaw_photonEfrac)")
-#process.TreeMaker2.VectorInt.append("JetsPropertiesRaw:chargedHadronMultiplicity(ak4JetsRaw_chargedHadMult)")
-#process.TreeMaker2.VectorInt.append("JetsPropertiesRaw:neutralHadronMultiplicity(ak4JetsRaw_neutralHadMult)")
-#process.TreeMaker2.VectorInt.append("JetsPropertiesRaw:photonMultiplicity(ak4JetsRaw_photonMult)")
-#process.TreeMaker2.VectorInt.append("JetsPropertiesRaw:flavor(ak4JetsRaw_flavor)")
-
 ### ak4 gen jets
-process.ak4GenJets = cms.EDProducer("fourVectorProducer",
-                                   particleCollection = cms.untracked.InputTag("slimmedGenJets"),
-                                   debug = cms.untracked.bool(False)
-                                   )
+#process.ak4GenJets = cms.EDProducer("fourVectorProducer",
+#                                   particleCollection = cms.untracked.InputTag("slimmedGenJets"),
+#                                   debug = cms.untracked.bool(False)
+#                                   )
 
-process.TreeMaker2.VectorTLorentzVector.append("ak4GenJets")
+#process.TreeMaker2.VectorTLorentzVector.append("ak4GenJets")
 
 ######################
 # event filters
@@ -178,17 +161,12 @@ process.WriteTree = cms.Path( process.Baseline *
                               process.goodElectrons4Vec * 
                               process.goodMuons4Vec *  
 
-                              #process.RA2eventFilter *
-
-                              process.genParticles * 
-
-                              #process.JetsPropertiesRaw *
                               process.ak4Jets *
                               process.ak4JetsRaw *
-                              process.ak4GenJets *
+                              #process.ak4GenJets *
 
-                              process.SumJetMass * 
-
+                              #process.SumJetMass * 
+                              
                               process.TreeMaker2 
                               )
 
