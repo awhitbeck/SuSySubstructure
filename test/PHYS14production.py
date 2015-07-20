@@ -16,9 +16,9 @@ process.options   = cms.untracked.PSet(
     )
 
 ## configure geometry & conditions
-process.load("Configuration.StandardSequences.Geometry_cff")
-process.load("Configuration.StandardSequences.MagneticField_cff")
-process.load('Configuration/StandardSequences/FrontierConditions_GlobalTag_cff')
+process.load("Configuration.StandardSequences.GeometryRecoDB_cff")
+process.load("Configuration.StandardSequences.MagneticField_AutoFromDBCurrent_cff")
+process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 ###############
 # tree maker
@@ -35,8 +35,9 @@ makeTreeFromMiniAOD(process,
                     numProcessedEvt=options.numEvents,
                     doZinv=True,
                     debugtracks=False,
-                    geninfo=False,
-                    filtertag="RECO"
+                    geninfo=True,
+                    tagname="PAT",
+                    jsonfile=""
                     )
 
 # drop all recoCand stuff and replace with 4-vectors
