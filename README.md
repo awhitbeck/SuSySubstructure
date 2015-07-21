@@ -67,3 +67,19 @@ there is an extra argument:
 Things to do for batch submission:
 
 1. get code working for check for and resubmitting failed jobs
+
+## Calculating integrated luminosity
+
+Scripts are available to calculate the integrated luminosity from data ntuples (produced with TreeMaker):
+
+<pre>
+python lumiSummary.py
+./calcLumi.sh
+</pre>
+
+The first script [lumiSummary.py](./lumiSummary.py) loops over a list of data samples and creates a JSON
+file for each sample consisting of the lumisections which were actually processed. (This script is based on
+the CRAB3 client job report scripts.)
+
+The second script [calcLumi.sh](./calcLumi.sh) runs [lcr2](https://twiki.cern.ch/twiki/bin/view/CMS/Lcr2) on the
+JSON files created by the first script. It will automatically copy `lcr2.py` and the `runcsv` directory from AFS.
