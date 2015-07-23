@@ -3,10 +3,6 @@ from commandLineParameters import *
 
 process = cms.Process("analysis")
 
-process.options = cms.untracked.PSet(
-    SkipEvent = cms.untracked.vstring('ProductNotFound')
-    )
-
 process.load("FWCore.MessageService.MessageLogger_cfi")
 process.MessageLogger.cerr.FwkReport.reportEvery = options.reportEvery
 
@@ -18,56 +14,50 @@ process.options   = cms.untracked.PSet(
 ## configure geometry & conditions
 process.load("Configuration.StandardSequences.GeometryRecoDB_cff")
 process.load("Configuration.StandardSequences.MagneticField_AutoFromDBCurrent_cff")
-process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
+
+##  LOAD DATAFILES
+readFiles = cms.untracked.vstring()
+
+if options.inputFilesConfig!="" :
+    process.load("AWhitbeck.SuSySubstructure."+options.inputFilesConfig+"_cff")
+    readFiles.extend( process.source.fileNames )
+
+if options.files!=[] :    
+    readFiles.extend( options.files )
 
 ###############
 # tree maker
 ###############
 
-from AllHadronicSUSY.TreeMaker.makeTreeFromMiniAOD_cff import makeTreeFromMiniAOD
-makeTreeFromMiniAOD(process,
-                    outFileName="ReducedSelection",
-                    reportEveryEvt=options.reportEvery,
-                    testFileName="",
-                    Global_Tag="PHYS14_25_V2::All",
-                    Global_Tag="GR_P_V56::All",
-                    lostlepton=True,
-                    hadtau=True,
+from TreeMaker.TreeMaker.makeTreeFromMiniAOD_cff import makeTreeFromMiniAOD
+process = makeTreeFromMiniAOD(process,
+                    outfile=options.outputFile+"_RA2AnalysisTree",
+                    reportfreq=options.reportEvery,
+                    dataset=readFiles,
+                    globaltag="PHYS14_25_V2::All",
+                    lostlepton=False,
+                    hadtau=False,
                     tagandprobe=False,
-                    numProcessedEvt=options.numEvents,
+                    numevents=options.numEvents,
                     doZinv=True,
                     debugtracks=False,
-                    geninfo=False,
-                    tagname="RECO",
-                    jsonfile="Cert_246908-251883_13TeV_PromptReco_Collisions15_JSON.txt"
+                    geninfo=True,
+                    tagname="PAT",
+                    jsonfile="",
+                    applyjec=False
                     )
 
-# drop all recoCand stuff and replace with 4-vectors
-# --------------------------------------------------
-process.TreeMaker2.VarsRecoCand = []
+## CONFIGURE TFILESERVICE
 
-process.goodElectrons4Vec = cms.EDProducer("fourVectorProducer",
-                                           particleCollection = cms.untracked.InputTag("LeptonsNew","IdIsoElectron"),
-                                           debug = cms.untracked.bool(False)
-                                           )
-
-process.goodMuons4Vec = cms.EDProducer("fourVectorProducer",
-                                           particleCollection = cms.untracked.InputTag("LeptonsNew","IdIsoMuon"),
-                                           debug = cms.untracked.bool(False)
-                                           )
-
-process.TreeMaker2.VectorTLorentzVector.append("goodMuons4Vec(Muons)")
-process.TreeMaker2.VectorInt.append("LeptonsNew:MuonCharge(MuonCharge)")
-process.TreeMaker2.VectorTLorentzVector.append("goodElectrons4Vec(Electrons)")
-process.TreeMaker2.VectorInt.append("LeptonsNew:ElectronCharge(ElectronCharge)")
+process.TFileService.closeFileFast = cms.untracked.bool(True)
 
 ##################################
 # DEFINE MODULES FOR ANALYSIS
 ##################################
 
-###############
+# ==================
 # rho stuff
-###############
+# ==================
 
 process.TreeMaker2.VarsDouble.append("fixedGridRhoFastjetAll(rho)")
 
@@ -76,24 +66,15 @@ process.TreeMaker2.VarsDouble.append("fixedGridRhoFastjetAll(rho)")
 # ==================
 
 #from AWhitbeck.SuSySubstructure.fatJetStudies_cff import *
-#fatJetSetup(process) ## define relevant modules and a sequence to be used, process.SumJetMass
+#process = fatJetSetup(process) ## define relevant modules and a sequence to be used, process.SumJetMass
+#process.AdditionalSequence += process.SumJetMass ## add process.SumJetMass to sequence
 
 # ==================
 # ak4 jets
 # ==================
 
-process.ak4Jets = cms.EDProducer("fourVectorProducer",
-                                   particleCollection = cms.untracked.InputTag("GoodJets"),
-                                   debug = cms.untracked.bool(False)
-                                   )
-
-process.ak4JetsRaw = cms.EDProducer("fourVectorProducer",
-                                    particleCollection = cms.untracked.InputTag("slimmedJets"),
-                                    debug = cms.untracked.bool(False)
-                                    )
-
-process.TreeMaker2.VectorTLorentzVector.append("ak4Jets")
-process.TreeMaker2.VectorTLorentzVector.append("ak4JetsRaw")
+process.TreeMaker2.VectorRecoCand.append("GoodJets(ak4Jets)")
+process.TreeMaker2.VectorRecoCand.append("slimmedJets(ak4JetsRaw)")
 #process.TreeMaker2.VectorInt.append("GoodJets:passJetID(ak4Jets_passedJetID)")
 
 process.TreeMaker2.VectorDouble.append("JetsProperties:bDiscriminatorUser(ak4Jets_CSVdisc)")
@@ -112,74 +93,4 @@ process.TreeMaker2.VectorInt.append("JetsProperties:photonMultiplicity(ak4Jets_p
 process.TreeMaker2.VectorInt.append("JetsProperties:flavor(ak4Jets_flavor)")
 
 ### ak4 gen jets
-#process.ak4GenJets = cms.EDProducer("fourVectorProducer",
-#                                   particleCollection = cms.untracked.InputTag("slimmedGenJets"),
-#                                   debug = cms.untracked.bool(False)
-#                                   )
-
-#process.TreeMaker2.VectorTLorentzVector.append("ak4GenJets")
-
-######################
-# event filters
-######################
-
-process.RA2eventFilter = cms.EDFilter("RA2eventFilter",
-                                      HTCollection = cms.untracked.InputTag("htNoPhotons"),
-                                      minHT = cms.untracked.double(500.),
-                                      MHTCollection = cms.untracked.InputTag("mhtNoPhotons"),
-                                      minMHT = cms.untracked.double(200.),
-                                      NJetsCollection = cms.untracked.InputTag("nJetsNoPhotons"),
-#                                      minNJets = cms.untracked.int(4),
-                                      BTagsCollection = cms.untracked.InputTag("BTags"),
-#                                      minBTags = cms.untracked.int(0),
-                                      minDeltaPhiNCollection = cms.untracked.InputTag("metNoPhotons","minDeltaPhiN"),
-                                      debug = cms.untracked.bool(False)
-                                      )
-
-## CONFIGURE TFILESERVICE
-
-process.TFileService = cms.Service("TFileService",
-                                   fileName = cms.string(options.outputFile+"_RA2AnalysisTree.root"),
-                                   closeFileFast = cms.untracked.bool(True)
-                                   )
-
-##  LOAD DATAFILES
-if options.inputFilesConfig!="" :
-    process.load("AWhitbeck.SuSySubstructure."+options.inputFilesConfig+"_cff")
-
-if options.files!=[] :   
-    readFiles = cms.untracked.vstring()
-    readFiles.extend( options.files )
-    process.source = cms.Source("PoolSource",
-                                fileNames = readFiles )
-
-process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(options.numEvents)
-)
-
-##  DEFINE SCHEDULE
-
-process.WriteTree = cms.Path( process.Baseline * 
-                              process.AdditionalSequence *
-                              process.goodElectrons4Vec * 
-                              process.goodMuons4Vec *  
-
-                              process.ak4Jets *
-                              process.ak4JetsRaw *
-                              #process.ak4GenJets *
-
-                              #process.SumJetMass * 
-                              
-                              process.TreeMaker2 
-                              )
-
-#OUPUT CONFIGURATION
-#process.out = cms.OutputModule("PoolOutputModule",
-#                               fileName = cms.untracked.string('test.root'),
-#                               #save only events passing the full path
-#                               #SelectEvents = cms.untracked.PSet( SelectEvents = cms.vstring('p') ),
-#                               outputCommands = cms.untracked.vstring('drop *','keep *_*photon*_*_*','keep *_*Jets*_*_*'
-#                                                                      )
-#                               )
-
-#process.outpath = cms.EndPath(process.out)
+#process.TreeMaker2.VectorRecoCand.append("slimmedGenJets(ak4GenJets)")

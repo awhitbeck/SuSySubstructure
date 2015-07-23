@@ -26,13 +26,8 @@ def fatJetSetup( process ):
                                              ptCut = cms.untracked.double(50.0),
                                              debug = cms.untracked.bool(False)
                                              )
-
-    process.ak1p2Jets4Vec = cms.EDProducer("fourVectorProducer",
-                                           particleCollection = cms.untracked.InputTag("ak1p2Jets"),
-                                           debug = cms.untracked.bool(False)
-                                           )
     
-    process.TreeMaker2.VectorTLorentzVector.append("ak1p2Jets4Vec(ak1p2Jets)")
+    process.TreeMaker2.VectorRecoCand.append("ak1p2Jets")
     process.TreeMaker2.VarsDouble.append("ak1p2sumJetMass(ak1p2Jets_sumJetMass)")
 
     # nsubjettiness stuff
@@ -69,12 +64,7 @@ def fatJetSetup( process ):
                                                    debug = cms.untracked.bool(False)
                                                    )
     
-    process.ak1p2JetsNoTrim4Vec = cms.EDProducer("fourVectorProducer",
-                                                 particleCollection = cms.untracked.InputTag("ak1p2JetsNoTrim"),
-                                                 debug = cms.untracked.bool(False)
-                                                 )
-
-    #process.TreeMaker2.VectorTLorentzVector.append("ak1p2JetsNoTrim4Vec(ak1p2JetsNoTrim)")
+    #process.TreeMaker2.VectorRecoCand.append("ak1p2JetsNoTrim")
     #process.TreeMaker2.VarsDouble.append("ak1p2NoTrimSumJetMass(ak1p2JetsNoTrim_sumJetMass)")
 
     #reclustered ak12 jets
@@ -127,13 +117,13 @@ def fatJetSetup( process ):
                                       process.ak1p2Jets * 
                                       process.ak1p2sumJetMass * 
                                       process.nSubjettiness *
-                                      process.ak1p2Jets4Vec *
                                       #process.ak1p2JetsNoTrim *
                                       #process.ak1p2NoTrimSumJetMass * 
-                                      #process.ak1p2JetsNoTrim4Vec *
                                       process.slimmedJetsPt15 * 
                                       process.fattenedJetsPt30 * 
                                       process.fattenedJetsPt20 * 
                                       process.fattenedJetsPt15 
                                       )
+
+    return process
     
