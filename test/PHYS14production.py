@@ -30,14 +30,16 @@ makeTreeFromMiniAOD(process,
                     reportEveryEvt=options.reportEvery,
                     testFileName="",
                     Global_Tag="PHYS14_25_V2::All",
+                    Global_Tag="GR_P_V56::All",
                     lostlepton=True,
+                    hadtau=True,
                     tagandprobe=False,
                     numProcessedEvt=options.numEvents,
                     doZinv=True,
                     debugtracks=False,
-                    geninfo=True,
-                    tagname="PAT",
-                    jsonfile=""
+                    geninfo=False,
+                    tagname="RECO",
+                    jsonfile="Cert_246908-251883_13TeV_PromptReco_Collisions15_JSON.txt"
                     )
 
 # drop all recoCand stuff and replace with 4-vectors
