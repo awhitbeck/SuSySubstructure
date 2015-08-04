@@ -11,6 +11,6 @@
 <use name="fastjet"/>
 <use name="ktjet"/>
 <use name="CommonTools/UtilAlgos"/>
-<use name="AllHadronicSUSY/Products"/>
+<use name="TreeMaker/Products"/>
 
 <flags   EDM_PLUGIN="1"/>
