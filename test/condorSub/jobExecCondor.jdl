@@ -12,5 +12,5 @@ Log = SAMPLE_$(Cluster).condor
 notification = Error
 notify_user = awhitbe1@FNAL.GOV
 x509userproxy = $ENV(X509_USER_PROXY)
-Arguments = CMSSWVER OUTDIR SAMPLE FILELIST
+Arguments = CMSSWVER OUTDIR SAMPLE FILELIST SCENARIO
 Queue 1

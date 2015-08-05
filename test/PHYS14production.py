@@ -1,5 +1,6 @@
 import FWCore.ParameterSet.Config as cms
 from commandLineParameters import *
+import sys,os
 
 process = cms.Process("analysis")
 
@@ -18,7 +19,29 @@ process.options   = cms.untracked.PSet(
 ## configure geometry & conditions
 process.load("Configuration.StandardSequences.GeometryRecoDB_cff")
 process.load("Configuration.StandardSequences.MagneticField_AutoFromDBCurrent_cff")
-process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
+
+## auto configuration for different scenarios
+if options.scenario == "Phys14":
+    Global_Tag="PHYS14_25_V2"
+    tagname="PAT"
+    geninfo=True
+    jsonfile=""
+    jecfile=""
+    residual=False
+elif options.scenario == "Spring15":
+    Global_Tag="MCRUN2_74_V9"
+    tagname="PAT"
+    geninfo=True
+    jsonfile=""
+    jecfile="Summer15_50nsV2_MC"
+    residual=False
+elif options.scenario == "2015B":
+    Global_Tag="74X_dataRun2_Prompt_v1"
+    tagname="RECO"
+    geninfo=False
+    jsonfile="Cert_246908-251883_13TeV_PromptReco_Collisions15_JSON_v2.txt"
+    jecfile="Summer15_50nsV2_MC"
+    residual=False #will eventually be true
 
 ###############
 # tree maker
@@ -29,15 +52,17 @@ makeTreeFromMiniAOD(process,
                     outFileName="ReducedSelection",
                     reportEveryEvt=options.reportEvery,
                     testFileName="",
-                    Global_Tag="PHYS14_25_V2::All",
-                    lostlepton=True,
+                    Global_Tag=Global_Tag,
+                    lostlepton=False,
                     tagandprobe=False,
                     numProcessedEvt=options.numEvents,
                     doZinv=True,
                     debugtracks=False,
-                    geninfo=True,
-                    tagname="PAT",
-                    jsonfile=""
+                    geninfo=geninfo,
+                    tagname=tagname,
+                    jsonfile=jsonfile,
+                    jecfile=jecfile,
+                    residual=residual
                     )
 
 # drop all recoCand stuff and replace with 4-vectors
@@ -85,13 +110,13 @@ process.ak4Jets = cms.EDProducer("fourVectorProducer",
                                    debug = cms.untracked.bool(False)
                                    )
 
-process.ak4JetsRaw = cms.EDProducer("fourVectorProducer",
-                                    particleCollection = cms.untracked.InputTag("slimmedJets"),
-                                    debug = cms.untracked.bool(False)
-                                    )
+#process.ak4JetsRaw = cms.EDProducer("fourVectorProducer",
+#                                    particleCollection = cms.untracked.InputTag("slimmedJets"),
+#                                    debug = cms.untracked.bool(False)
+#                                    )
 
 process.TreeMaker2.VectorTLorentzVector.append("ak4Jets")
-process.TreeMaker2.VectorTLorentzVector.append("ak4JetsRaw")
+#process.TreeMaker2.VectorTLorentzVector.append("ak4JetsRaw")
 #process.TreeMaker2.VectorInt.append("GoodJets:passJetID(ak4Jets_passedJetID)")
 
 process.TreeMaker2.VectorDouble.append("JetsProperties:bDiscriminatorUser(ak4Jets_CSVdisc)")
@@ -163,7 +188,7 @@ process.WriteTree = cms.Path( process.Baseline *
                               process.goodMuons4Vec *  
 
                               process.ak4Jets *
-                              process.ak4JetsRaw *
+                              #process.ak4JetsRaw *
                               #process.ak4GenJets *
 
                               #process.SumJetMass * 
