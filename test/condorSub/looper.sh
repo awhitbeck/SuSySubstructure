@@ -78,3 +78,32 @@ python generateSubmission.py -n 1 -s -f PHYS14.QCD_HT-500To1000_13TeV-madgraph_e
 #python generateSubmission.py -n 1 -s -f Run2015B-PromptReco-v1.SingleMu -o $outputDir -c 2015B
 #python generateSubmission.py -n 1 -s -f Run2015B-PromptReco-v1.SingleMuon -o $outputDir -c 2015B
 #python generateSubmission.py -n 1 -s -f Run2015B-PromptReco-v1.SinglePhoton -o $outputDir -c 2015B
+
+#### Spring15 samples
+#python generateSubmission.py -n 1 -s -o $outputDir -c Spring15 -f Spring15.QCD_Pt_3200toInf_TuneCUETP8M1_13TeV_pythia8
+#python generateSubmission.py -n 1 -s -o $outputDir -c Spring15 -f Spring15.QCD_Pt_2400to3200_TuneCUETP8M1_13TeV_pythia8
+#python generateSubmission.py -n 1 -s -o $outputDir -c Spring15 -f Spring15.QCD_Pt_1800to2400_TuneCUETP8M1_13TeV_pythia8
+#python generateSubmission.py -n 1 -s -o $outputDir -c Spring15 -f Spring15.QCD_Pt_1400to1800_TuneCUETP8M1_13TeV_pythia8
+#python generateSubmission.py -n 1 -s -o $outputDir -c Spring15 -f Spring15.QCD_Pt_1000to1400_TuneCUETP8M1_13TeV_pythia8
+#python generateSubmission.py -n 1 -s -o $outputDir -c Spring15 -f Spring15.QCD_Pt_800to1000_TuneCUETP8M1_13TeV_pythia8
+#python generateSubmission.py -n 1 -s -o $outputDir -c Spring15 -f Spring15.QCD_Pt_600to800_TuneCUETP8M1_13TeV_pythia8
+#python generateSubmission.py -n 1 -s -o $outputDir -c Spring15 -f Spring15.QCD_Pt_470to600_TuneCUETP8M1_13TeV_pythia8
+#python generateSubmission.py -n 1 -s -o $outputDir -c Spring15 -f Spring15.QCD_Pt_300to470_TuneCUETP8M1_13TeV_pythia8
+#python generateSubmission.py -n 1 -s -o $outputDir -c Spring15 -f Spring15.QCD_Pt_170to300_TuneCUETP8M1_13TeV_pythia8
+#python generateSubmission.py -n 1 -s -o $outputDir -c Spring15 -f Spring15.QCD_Pt_120to170_TuneCUETP8M1_13TeV_pythia8
+#python generateSubmission.py -n 1 -s -o $outputDir -c Spring15 -f Spring15.QCD_Pt_80to120_TuneCUETP8M1_13TeV_pythia8
+#python generateSubmission.py -n 1 -s -o $outputDir -c Spring15 -f Spring15.ttHJetTobb_M125_13TeV_amcatnloFXFX_madspin_pythia8
+#python generateSubmission.py -n 1 -s -o $outputDir -c Spring15 -f Spring15.ggZH_HToBB_ZToNuNu_M125_13TeV_powheg_pythia8
+#python generateSubmission.py -n 1 -s -o $outputDir -c Spring15 -f Spring15.WWToLNuQQ_13TeV-powheg
+#python generateSubmission.py -n 1 -s -o $outputDir -c Spring15 -f Spring15.WWTo2L2Nu_13TeV-powheg
+#python generateSubmission.py -n 1 -s -o $outputDir -c Spring15 -f Spring15.ST_tW_top_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1
+#python generateSubmission.py -n 1 -s -o $outputDir -c Spring15 -f Spring15.ST_tW_antitop_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1
+#python generateSubmission.py -n 1 -s -o $outputDir -c Spring15 -f Spring15.ST_t-channel_top_4f_leptonDecays_13TeV-powheg-pythia8_TuneCUETP8M1
+#python generateSubmission.py -n 1 -s -o $outputDir -c Spring15 -f Spring15.ST_t-channel_antitop_4f_leptonDecays_13TeV-powheg-pythia8_TuneCUETP8M1
+#python generateSubmission.py -n 1 -s -o $outputDir -c Spring15 -f Spring15.ST_s-channel_4f_leptonDecays_13TeV-amcatnlo-pythia8_TuneCUETP8M1
+#python generateSubmission.py -n 1 -s -o $outputDir -c Spring15 -f Spring15.WJetsToLNu_HT-600ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8
+#python generateSubmission.py -n 1 -s -o $outputDir -c Spring15 -f Spring15.WJetsToLNu_HT-400To600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8
+#python generateSubmission.py -n 1 -s -o $outputDir -c Spring15 -f Spring15.WJetsToLNu_HT-200To400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8
+#python generateSubmission.py -n 1 -s -o $outputDir -c Spring15 -f Spring15.WJetsToLNu_HT-100To200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8
+#python generateSubmission.py -n 1 -s -o $outputDir -c Spring15 -f Spring15.TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8
+
