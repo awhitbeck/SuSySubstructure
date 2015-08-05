@@ -34,7 +34,9 @@ readFiles.extend( [
        '/store/data/Run2015B/EGamma/MINIAOD/PromptReco-v1/000/251/153/00000/18B36190-9426-E511-8CA1-02163E014557.root',
        '/store/data/Run2015B/EGamma/MINIAOD/PromptReco-v1/000/251/155/00000/04F23535-9626-E511-9A79-02163E011D12.root',
        '/store/data/Run2015B/EGamma/MINIAOD/PromptReco-v1/000/251/156/00000/F28F9872-9726-E511-8BE1-02163E01239B.root',
-       '/store/data/Run2015B/EGamma/MINIAOD/PromptReco-v1/000/251/250/00000/683B8A4A-4C27-E511-B607-02163E011ABC.root' ] );
+       '/store/data/Run2015B/EGamma/MINIAOD/PromptReco-v1/000/251/250/00000/683B8A4A-4C27-E511-B607-02163E011ABC.root', 
+
+] );
 
 
 secFiles.extend( [
