@@ -4,21 +4,19 @@ import sys,os
 
 process = cms.Process("analysis")
 
-process.options = cms.untracked.PSet(
-    SkipEvent = cms.untracked.vstring('ProductNotFound')
-    )
-
-process.load("FWCore.MessageService.MessageLogger_cfi")
-process.MessageLogger.cerr.FwkReport.reportEvery = options.reportEvery
-
-process.options   = cms.untracked.PSet(
-    SkipEvent   = cms.untracked.vstring('ProductNotFound'),
-    wantSummary = cms.untracked.bool(True)
-    )
-
 ## configure geometry & conditions
 process.load("Configuration.StandardSequences.GeometryRecoDB_cff")
 process.load("Configuration.StandardSequences.MagneticField_AutoFromDBCurrent_cff")
+
+##  LOAD DATAFILES
+readFiles = cms.untracked.vstring()
+
+if options.inputFilesConfig!="" :
+    process.load("AWhitbeck.SuSySubstructure."+options.inputFilesConfig+"_cff")
+    readFiles.extend( process.source.fileNames )
+
+if options.files!=[] :    
+    readFiles.extend( options.files )
 
 ## auto configuration for different scenarios
 if options.scenario == "Phys14":
@@ -49,9 +47,9 @@ elif options.scenario == "2015B":
 
 from AllHadronicSUSY.TreeMaker.makeTreeFromMiniAOD_cff import makeTreeFromMiniAOD
 makeTreeFromMiniAOD(process,
-                    outFileName="ReducedSelection",
+                    outFileName=options.outputFile+"_RA2AnalysisTree",
                     reportEveryEvt=options.reportEvery,
-                    testFileName="",
+                    testFileName=readFiles,
                     Global_Tag=Global_Tag,
                     lostlepton=False,
                     tagandprobe=False,
@@ -64,6 +62,11 @@ makeTreeFromMiniAOD(process,
                     jecfile=jecfile,
                     residual=residual
                     )
+
+process.options   = cms.untracked.PSet(
+    SkipEvent   = cms.untracked.vstring('ProductNotFound'),
+    wantSummary = cms.untracked.bool(True)
+    )
 
 # drop all recoCand stuff and replace with 4-vectors
 # --------------------------------------------------
@@ -161,24 +164,7 @@ process.RA2eventFilter = cms.EDFilter("RA2eventFilter",
 
 ## CONFIGURE TFILESERVICE
 
-process.TFileService = cms.Service("TFileService",
-                                   fileName = cms.string(options.outputFile+"_RA2AnalysisTree.root"),
-                                   closeFileFast = cms.untracked.bool(True)
-                                   )
-
-##  LOAD DATAFILES
-if options.inputFilesConfig!="" :
-    process.load("AWhitbeck.SuSySubstructure."+options.inputFilesConfig+"_cff")
-
-if options.files!=[] :   
-    readFiles = cms.untracked.vstring()
-    readFiles.extend( options.files )
-    process.source = cms.Source("PoolSource",
-                                fileNames = readFiles )
-
-process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(options.numEvents)
-)
+process.TFileService.closeFileFast = cms.untracked.bool(True)
 
 ##  DEFINE SCHEDULE
 
