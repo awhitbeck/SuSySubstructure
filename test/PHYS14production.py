@@ -70,10 +70,7 @@ makeTreeFromMiniAOD(process,
                     residual=residual
                     )
 
-process.options   = cms.untracked.PSet(
-    SkipEvent   = cms.untracked.vstring('ProductNotFound'),
-    wantSummary = cms.untracked.bool(True)
-    )
+process.options.SkipEvent   = cms.untracked.vstring('ProductNotFound')
 
 # drop all recoCand stuff and replace with 4-vectors
 # --------------------------------------------------
