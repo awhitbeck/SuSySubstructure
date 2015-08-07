@@ -40,6 +40,13 @@ elif options.scenario == "2015B":
     jsonfile="Cert_246908-251883_13TeV_PromptReco_Collisions15_JSON_v2.txt"
     jecfile="Summer15_50nsV2_MC"
     residual=False #will eventually be true
+elif options.scenario == "re2015B":
+    Global_Tag="74X_dataRun2_Prompt_v1"
+    tagname="PAT"
+    geninfo=False
+    jsonfile="Cert_246908-251883_13TeV_PromptReco_Collisions15_JSON_v2.txt"
+    jecfile="Summer15_50nsV2_MC"
+    residual=False #will eventually be true
 
 ###############
 # tree maker
