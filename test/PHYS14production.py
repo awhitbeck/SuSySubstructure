@@ -31,7 +31,7 @@ elif options.scenario == "Spring15":
     tagname="PAT"
     geninfo=True
     jsonfile=""
-    jecfile="PHYS14_V4_MC"
+    jecfile="Summer15_25nsV2_MC"
     residual=False
 elif options.scenario == "2015B":
     Global_Tag="74X_dataRun2_Prompt_v1"
