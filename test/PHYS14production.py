@@ -149,23 +149,6 @@ process.TreeMaker2.VectorInt.append("JetsProperties:flavor(ak4Jets_flavor)")
 
 #process.TreeMaker2.VectorTLorentzVector.append("ak4GenJets")
 
-######################
-# event filters
-######################
-
-process.RA2eventFilter = cms.EDFilter("RA2eventFilter",
-                                      HTCollection = cms.untracked.InputTag("htNoPhotons"),
-                                      minHT = cms.untracked.double(500.),
-                                      MHTCollection = cms.untracked.InputTag("mhtNoPhotons"),
-                                      minMHT = cms.untracked.double(200.),
-                                      NJetsCollection = cms.untracked.InputTag("nJetsNoPhotons"),
-#                                      minNJets = cms.untracked.int(4),
-                                      BTagsCollection = cms.untracked.InputTag("BTags"),
-#                                      minBTags = cms.untracked.int(0),
-                                      minDeltaPhiNCollection = cms.untracked.InputTag("metNoPhotons","minDeltaPhiN"),
-                                      debug = cms.untracked.bool(False)
-                                      )
-
 ## CONFIGURE TFILESERVICE
 
 process.TFileService.closeFileFast = cms.untracked.bool(True)
