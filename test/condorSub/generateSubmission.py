@@ -16,7 +16,7 @@ parser.add_option("-s","--submit",dest="submit", default=False,action="store_tru
                                        help="submit jobs to condor once they are configured")
 
 parser.add_option("-c","--scenario",dest="scenario", default="Phys14",
-                                       help="scenario: Phys14, Spring15, 2015B")
+                                       help="scenario: Phys14, Spring15, 2015B, re2015B")
 
 (options, args) = parser.parse_args()
 
