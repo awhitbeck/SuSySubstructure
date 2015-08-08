@@ -37,11 +37,12 @@ for command line arguments to be passed along.  The relevant command line argume
 | inputFilesConfig  | ""            | intputFilesConfig=PHYS14.SMS-T1tttt_2J_mGl-1200_mLSP-800_Tune4C_13TeV-madgraph-tauola | config file for inputs, automatically appended with _cff.py |
 | outputFile        | "T1tttt"      | outputFile=T1tttt    | root file for outputs, automatically appended with _RA2AnalysisTree.root |
 | files             | ""            | files=file:myMINIAODfile.root | This can be used for comma separated lists of files. |
+| scenario          | ""            | scenario=Phys14 | To set up the necessary TreeMaker parameters for different scenarios; options: Phys14, Spring15, 2015B, re2015B  |
 
 So, an example of how to run the code would be:
 
 <pre>
-cmsRun PHYS14production.py inputFilesConfig=PHYS14.SMS-T1tttt_2J_mGl-1200_mLSP-800_Tune4C_13TeV-madgraph-tauola outputFile=T1tttt_mGl-1200_mLSP-800
+cmsRun PHYS14production.py inputFilesConfig=PHYS14.SMS-T1tttt_2J_mGl-1200_mLSP-800_Tune4C_13TeV-madgraph-tauola outputFile=T1tttt_mGl-1200_mLSP-800 scenario=Phys14
 </pre>
 
 ## Submit Production to Condor (@ LPC)

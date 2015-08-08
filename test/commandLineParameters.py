@@ -116,7 +116,11 @@ options.register ('maxNjets',
                   VarParsing.VarParsing.varType.int,          #string, int, or float
                   "maximum number of jets")
 
-
+options.register ('scenario',
+                  "", # default value
+                  VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                  VarParsing.VarParsing.varType.string,          # string, int, or float
+                  "scenario for TreeMaker parameters: Phys14, Spring15, 2015B, re2015B")
 
 # get and parse the command line arguments
 options.parseArguments()

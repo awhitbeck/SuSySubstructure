@@ -15,6 +15,9 @@ parser.add_option("-o","--outputDir",dest="outputDir", default="",
 parser.add_option("-s","--submit",dest="submit", default=False,action="store_true",
                                        help="submit jobs to condor once they are configured")
 
+parser.add_option("-c","--scenario",dest="scenario", default="Phys14",
+                                       help="scenario: Phys14, Spring15, 2015B")
+
 (options, args) = parser.parse_args()
 
 if options.outputDir=="":
@@ -23,6 +26,7 @@ if options.outputDir=="":
 # varify specified options
 print "nFiles: ",options.nFiles
 print "filesConfig: ",options.filesConfig
+print "scenario: ",options.scenario
 print "submit: ",options.submit
 
 # clean up
@@ -69,7 +73,12 @@ for iJob in range( nJobs ) :
 
     # replace placeholders in template files
     jobname = "jobExecCondor_"+options.filesConfig+"_"+str(iJob)+".jdl"
-    os.system("sed -e 's|CMSSWVER|'${CMSSW_VERSION}'|g' -e 's~OUTDIR~"+options.outputDir+"~g' -e 's|SAMPLE|"+options.filesConfig+"_"+str(iJob)+"|g' -e 's|FILELIST|"+list+"|g' < jobExecCondor.jdl > "+jobname)
+    os.system("sed -e 's|CMSSWVER|'${CMSSW_VERSION}'|g' "\
+                 +"-e 's~OUTDIR~"+options.outputDir+"~g' "\
+                 +"-e 's|SAMPLE|"+options.filesConfig+"_"+str(iJob)+"|g' "\
+                 +"-e 's|FILELIST|"+list+"|g' "\
+                 +"-e 's|SCENARIO|"+options.scenario+"|g' "\
+                 +"< jobExecCondor.jdl > "+jobname)
 
     # submit jobs to condor, if -s was specified
     if ( options.submit ) :

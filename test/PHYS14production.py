@@ -1,24 +1,52 @@
 import FWCore.ParameterSet.Config as cms
 from commandLineParameters import *
+import sys,os
 
 process = cms.Process("analysis")
-
-process.options = cms.untracked.PSet(
-    SkipEvent = cms.untracked.vstring('ProductNotFound')
-    )
-
-process.load("FWCore.MessageService.MessageLogger_cfi")
-process.MessageLogger.cerr.FwkReport.reportEvery = options.reportEvery
-
-process.options   = cms.untracked.PSet(
-    SkipEvent   = cms.untracked.vstring('ProductNotFound'),
-    wantSummary = cms.untracked.bool(True)
-    )
 
 ## configure geometry & conditions
 process.load("Configuration.StandardSequences.GeometryRecoDB_cff")
 process.load("Configuration.StandardSequences.MagneticField_AutoFromDBCurrent_cff")
-process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
+
+##  LOAD DATAFILES
+readFiles = cms.untracked.vstring()
+
+if options.inputFilesConfig!="" :
+    process.load("AWhitbeck.SuSySubstructure."+options.inputFilesConfig+"_cff")
+    readFiles.extend( process.source.fileNames )
+
+if options.files!=[] :    
+    readFiles.extend( options.files )
+
+## auto configuration for different scenarios
+if options.scenario == "Phys14":
+    Global_Tag="PHYS14_25_V2"
+    tagname="PAT"
+    geninfo=True
+    jsonfile=""
+    jecfile=""
+    residual=False
+elif options.scenario == "Spring15":
+    Global_Tag="MCRUN2_74_V9"
+    tagname="PAT"
+    geninfo=True
+    jsonfile=""
+    jecfile="Summer15_25nsV2_MC"
+    residual=False
+elif options.scenario == "2015B":
+    Global_Tag="74X_dataRun2_Prompt_v1"
+    tagname="RECO"
+    geninfo=False
+    jsonfile="Cert_246908-251883_13TeV_PromptReco_Collisions15_JSON_v2.txt"
+    jecfile="Summer15_50nsV2_MC"
+    residual=False #will eventually be true
+elif options.scenario == "re2015B":
+    Global_Tag="74X_dataRun2_Prompt_v1"
+    tagname="PAT"
+    geninfo=False
+    jsonfile="Cert_246908-251883_13TeV_PromptReco_Collisions15_JSON_v2.txt"
+    jecfile="Summer15_50nsV2_MC"
+    residual=False #will eventually be true
 
 ###############
 # tree maker
@@ -26,19 +54,23 @@ process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 from AllHadronicSUSY.TreeMaker.makeTreeFromMiniAOD_cff import makeTreeFromMiniAOD
 makeTreeFromMiniAOD(process,
-                    outFileName="ReducedSelection",
+                    outFileName=options.outputFile+"_RA2AnalysisTree",
                     reportEveryEvt=options.reportEvery,
-                    testFileName="",
-                    Global_Tag="PHYS14_25_V2::All",
-                    lostlepton=True,
+                    testFileName=readFiles,
+                    Global_Tag=Global_Tag,
+                    lostlepton=False,
                     tagandprobe=False,
                     numProcessedEvt=options.numEvents,
                     doZinv=True,
                     debugtracks=False,
-                    geninfo=True,
-                    tagname="PAT",
-                    jsonfile=""
+                    geninfo=geninfo,
+                    tagname=tagname,
+                    jsonfile=jsonfile,
+                    jecfile=jecfile,
+                    residual=residual
                     )
+
+process.options.SkipEvent   = cms.untracked.vstring('ProductNotFound')
 
 # drop all recoCand stuff and replace with 4-vectors
 # --------------------------------------------------
@@ -85,13 +117,13 @@ process.ak4Jets = cms.EDProducer("fourVectorProducer",
                                    debug = cms.untracked.bool(False)
                                    )
 
-process.ak4JetsRaw = cms.EDProducer("fourVectorProducer",
-                                    particleCollection = cms.untracked.InputTag("slimmedJets"),
-                                    debug = cms.untracked.bool(False)
-                                    )
+#process.ak4JetsRaw = cms.EDProducer("fourVectorProducer",
+#                                    particleCollection = cms.untracked.InputTag("slimmedJets"),
+#                                    debug = cms.untracked.bool(False)
+#                                    )
 
 process.TreeMaker2.VectorTLorentzVector.append("ak4Jets")
-process.TreeMaker2.VectorTLorentzVector.append("ak4JetsRaw")
+#process.TreeMaker2.VectorTLorentzVector.append("ak4JetsRaw")
 #process.TreeMaker2.VectorInt.append("GoodJets:passJetID(ak4Jets_passedJetID)")
 
 process.TreeMaker2.VectorDouble.append("JetsProperties:bDiscriminatorUser(ak4Jets_CSVdisc)")
@@ -136,24 +168,7 @@ process.RA2eventFilter = cms.EDFilter("RA2eventFilter",
 
 ## CONFIGURE TFILESERVICE
 
-process.TFileService = cms.Service("TFileService",
-                                   fileName = cms.string(options.outputFile+"_RA2AnalysisTree.root"),
-                                   closeFileFast = cms.untracked.bool(True)
-                                   )
-
-##  LOAD DATAFILES
-if options.inputFilesConfig!="" :
-    process.load("AWhitbeck.SuSySubstructure."+options.inputFilesConfig+"_cff")
-
-if options.files!=[] :   
-    readFiles = cms.untracked.vstring()
-    readFiles.extend( options.files )
-    process.source = cms.Source("PoolSource",
-                                fileNames = readFiles )
-
-process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(options.numEvents)
-)
+process.TFileService.closeFileFast = cms.untracked.bool(True)
 
 ##  DEFINE SCHEDULE
 
@@ -163,7 +178,7 @@ process.WriteTree = cms.Path( process.Baseline *
                               process.goodMuons4Vec *  
 
                               process.ak4Jets *
-                              process.ak4JetsRaw *
+                              #process.ak4JetsRaw *
                               #process.ak4GenJets *
 
                               #process.SumJetMass * 
