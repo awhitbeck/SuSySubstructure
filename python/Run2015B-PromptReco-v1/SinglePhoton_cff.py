@@ -5,25 +5,8 @@ readFiles = cms.untracked.vstring()
 secFiles = cms.untracked.vstring() 
 source = cms.Source ("PoolSource",fileNames = readFiles, secondaryFileNames = secFiles)
 readFiles.extend( [
-       '/store/data/Run2015B/SinglePhoton/MINIAOD/PromptReco-v1/000/251/096/00000/EAC7605D-5526-E511-A895-02163E011FAB.root',
-       '/store/data/Run2015B/SinglePhoton/MINIAOD/PromptReco-v1/000/251/161/00000/6E54E224-9C26-E511-B468-02163E0121BD.root',
-       '/store/data/Run2015B/SinglePhoton/MINIAOD/PromptReco-v1/000/251/162/00000/D83F99AD-4227-E511-8960-02163E0133B5.root',
-       '/store/data/Run2015B/SinglePhoton/MINIAOD/PromptReco-v1/000/251/163/00000/728A4697-9F26-E511-ADAD-02163E0119C9.root',
-       '/store/data/Run2015B/SinglePhoton/MINIAOD/PromptReco-v1/000/251/164/00000/80F01937-A426-E511-B2D7-02163E01182A.root',
-       '/store/data/Run2015B/SinglePhoton/MINIAOD/PromptReco-v1/000/251/167/00000/A6972749-A826-E511-B7C5-02163E013414.root',
-       '/store/data/Run2015B/SinglePhoton/MINIAOD/PromptReco-v1/000/251/168/00000/3CBFC5DE-BB26-E511-A5C2-02163E0135B4.root',
-       '/store/data/Run2015B/SinglePhoton/MINIAOD/PromptReco-v1/000/251/244/00000/D8D780D0-7727-E511-A2C5-02163E0137FC.root',
-       '/store/data/Run2015B/SinglePhoton/MINIAOD/PromptReco-v1/000/251/251/00000/6EED993F-9927-E511-A6A9-02163E01259F.root',
-       '/store/data/Run2015B/SinglePhoton/MINIAOD/PromptReco-v1/000/251/252/00000/289A42F1-9627-E511-8A00-02163E011C7F.root',
-       '/store/data/Run2015B/SinglePhoton/MINIAOD/PromptReco-v1/000/251/491/00000/9C464F2A-C628-E511-8923-02163E01463E.root',
-       '/store/data/Run2015B/SinglePhoton/MINIAOD/PromptReco-v1/000/251/493/00000/6819E5CA-C828-E511-AD4E-02163E0135F3.root',
-       '/store/data/Run2015B/SinglePhoton/MINIAOD/PromptReco-v1/000/251/497/00000/D43AFD8F-E028-E511-8467-02163E01414A.root',
-       '/store/data/Run2015B/SinglePhoton/MINIAOD/PromptReco-v1/000/251/498/00000/969A3EAE-EB28-E511-B91A-02163E012601.root',
-       '/store/data/Run2015B/SinglePhoton/MINIAOD/PromptReco-v1/000/251/499/00000/5EEEB744-F728-E511-8E47-02163E013440.root',
-       '/store/data/Run2015B/SinglePhoton/MINIAOD/PromptReco-v1/000/251/500/00000/1838372C-2329-E511-8E7B-02163E011BD1.root',
-       '/store/data/Run2015B/SinglePhoton/MINIAOD/PromptReco-v1/000/251/521/00000/9A3A76CA-6629-E511-8B2E-02163E011EE9.root',
        '/store/data/Run2015B/SinglePhoton/MINIAOD/PromptReco-v1/000/251/522/00000/9297A416-5B29-E511-8956-02163E014543.root',
-      '/store/data/Run2015B/SinglePhoton/MINIAOD/PromptReco-v1/000/251/548/00000/16919B06-D329-E511-B79D-02163E01252E.root',
+       '/store/data/Run2015B/SinglePhoton/MINIAOD/PromptReco-v1/000/251/548/00000/16919B06-D329-E511-B79D-02163E01252E.root',
        '/store/data/Run2015B/SinglePhoton/MINIAOD/PromptReco-v1/000/251/559/00000/82304EB8-A62C-E511-B4A3-02163E0133F9.root',
        '/store/data/Run2015B/SinglePhoton/MINIAOD/PromptReco-v1/000/251/560/00000/7E5EF8F5-DD29-E511-BC88-02163E011DAE.root',
        '/store/data/Run2015B/SinglePhoton/MINIAOD/PromptReco-v1/000/251/561/00000/F6777C76-152A-E511-A06F-02163E013553.root',
@@ -44,11 +27,15 @@ readFiles.extend( [
        '/store/data/Run2015B/SinglePhoton/MINIAOD/PromptReco-v1/000/252/102/00000/C860A95B-D92F-E511-A473-02163E01241A.root',
        '/store/data/Run2015B/SinglePhoton/MINIAOD/PromptReco-v1/000/252/116/00000/6EFB7390-7A30-E511-901E-02163E014462.root',
        '/store/data/Run2015B/SinglePhoton/MINIAOD/PromptReco-v1/000/252/126/00000/9C91DDFD-D930-E511-852E-02163E0125E8.root',
+       '/store/data/Run2015B/SinglePhoton/MINIAOD/PromptReco-v1/000/252/488/00000/325394A3-EE35-E511-9CB5-02163E01287D.root',
        '/store/data/Run2015B/SinglePhoton/MINIAOD/PromptReco-v1/000/252/489/00000/8E84B579-3434-E511-96BF-02163E014543.root',
        '/store/data/Run2015B/SinglePhoton/MINIAOD/PromptReco-v1/000/252/490/00000/8E01C5EB-3534-E511-9010-02163E012283.root',
-       '/store/data/Run2015B/SinglePhoton/MINIAOD/PromptReco-v1/000/252/492/00000/5EF62604-4734-E511-8F20-02163E011836.root'
- ] );
+       '/store/data/Run2015B/SinglePhoton/MINIAOD/PromptReco-v1/000/252/492/00000/5EF62604-4734-E511-8F20-02163E011836.root',
+       '/store/data/Run2015B/SinglePhoton/MINIAOD/PromptReco-v1/000/252/496/00000/6C14625C-CC35-E511-9B77-02163E014241.root',
+       '/store/data/Run2015B/SinglePhoton/MINIAOD/PromptReco-v1/000/252/499/00000/A4D30E76-CD35-E511-9195-02163E0137FD.root',
+       '/store/data/Run2015B/SinglePhoton/MINIAOD/PromptReco-v1/000/252/501/00000/B42326CF-CA35-E511-8C98-02163E0118F2.root' ] );
 
 
 secFiles.extend( [
                ] )
+
