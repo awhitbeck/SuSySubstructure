@@ -5,20 +5,6 @@ readFiles = cms.untracked.vstring()
 secFiles = cms.untracked.vstring() 
 source = cms.Source ("PoolSource",fileNames = readFiles, secondaryFileNames = secFiles)
 readFiles.extend( [
-       '/store/data/Run2015B/SingleElectron/MINIAOD/PromptReco-v1/000/251/522/00000/805EB9CD-6129-E511-BF1C-02163E0129A3.root',
-       '/store/data/Run2015B/SingleElectron/MINIAOD/PromptReco-v1/000/251/548/00000/B6D08898-232A-E511-A833-02163E011DDE.root',
-       '/store/data/Run2015B/SingleElectron/MINIAOD/PromptReco-v1/000/251/559/00000/AA62F6DD-A62C-E511-A8EC-02163E013791.root',
-       '/store/data/Run2015B/SingleElectron/MINIAOD/PromptReco-v1/000/251/560/00000/BA599BB8-E129-E511-B26A-02163E0134CC.root',
-       '/store/data/Run2015B/SingleElectron/MINIAOD/PromptReco-v1/000/251/561/00000/5ACDA1DE-FB29-E511-8D8C-02163E0133B5.root',
-       '/store/data/Run2015B/SingleElectron/MINIAOD/PromptReco-v1/000/251/561/00000/CA80E14E-1E2A-E511-8C7D-02163E0122C2.root',
-       '/store/data/Run2015B/SingleElectron/MINIAOD/PromptReco-v1/000/251/562/00000/30DDF910-5E2A-E511-9F4D-02163E01206A.root',
-       '/store/data/Run2015B/SingleElectron/MINIAOD/PromptReco-v1/000/251/562/00000/3CE07240-742A-E511-BA88-02163E01258B.root',
-       '/store/data/Run2015B/SingleElectron/MINIAOD/PromptReco-v1/000/251/562/00000/5CF006D1-602A-E511-95CE-02163E0126E1.root',
-       '/store/data/Run2015B/SingleElectron/MINIAOD/PromptReco-v1/000/251/562/00000/8EE9BBAA-7E2A-E511-AEF7-02163E0143C0.root',
-       '/store/data/Run2015B/SingleElectron/MINIAOD/PromptReco-v1/000/251/562/00000/B41B8802-672A-E511-A9EA-02163E012787.root',
-       '/store/data/Run2015B/SingleElectron/MINIAOD/PromptReco-v1/000/251/562/00000/DCC900B5-972A-E511-9785-02163E012283.root',
-       '/store/data/Run2015B/SingleElectron/MINIAOD/PromptReco-v1/000/251/562/00000/F0A7C9F3-6B2A-E511-A73B-02163E0126A0.root',
-       '/store/data/Run2015B/SingleElectron/MINIAOD/PromptReco-v1/000/251/562/00000/FE5AD795-6E2A-E511-9C40-02163E012787.root',
        '/store/data/Run2015B/SingleElectron/MINIAOD/PromptReco-v1/000/251/604/00000/AE22AF42-902A-E511-8A22-02163E012B30.root',
        '/store/data/Run2015B/SingleElectron/MINIAOD/PromptReco-v1/000/251/612/00000/50DA7894-932A-E511-801E-02163E0136A2.root',
        '/store/data/Run2015B/SingleElectron/MINIAOD/PromptReco-v1/000/251/628/00000/40EF63A0-B52A-E511-8B57-02163E0133F0.root',
