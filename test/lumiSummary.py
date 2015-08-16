@@ -7,7 +7,11 @@ from itertools import izip
 import array
 
 redirector = "root://cmseos.fnal.gov//"
+<<<<<<< HEAD
 baseDir = "/store/user/lpcsusyhad/SusyRA2Analysis2015/DPSproductionPatch2/"
+=======
+baseDir = "/store/user/lpcsusyhad/SusyRA2Analysis2015/FinalProductionDPSv1/"
+>>>>>>> 348b08bc9f70f25fa85c8b5a679cdb3c3407d986
 
 # ------------------------------------------------------------
 # ------------------------------------------------------------
@@ -34,6 +38,7 @@ class sampleInfo :
 # ------------------------------------------------------------
 # ------------------------------------------------------------
 
+<<<<<<< HEAD
 dataSamples = [ sampleInfo( baseDir+"/Run2015B-17Jul2015-v1.DoubleEG_*", "DoubleEG")  , 
                 sampleInfo( baseDir+"/Run2015B-17Jul2015-v1.DoubleMuon_*", "DoubleMuon")  , 
                 sampleInfo( baseDir+"/Run2015B-17Jul2015-v1.EGamma_*", "EGamma")  , 
@@ -42,6 +47,17 @@ dataSamples = [ sampleInfo( baseDir+"/Run2015B-17Jul2015-v1.DoubleEG_*", "Double
                 sampleInfo( baseDir+"/Run2015B-17Jul2015-v1.SingleMu_*", "SingleMu")  , 
                 sampleInfo( baseDir+"/Run2015B-17Jul2015-v1.SingleMuon_*", "SingleMuon")  , 
                 sampleInfo( baseDir+"/Run2015B-17Jul2015-v1.SinglePhoton_*", "SinglePhoton")  , 
+=======
+dataSamples = [ sampleInfo( baseDir+"/Run2015B-PromptReco-v1.DoubleEG_*", "DoubleEG")  , 
+                sampleInfo( baseDir+"/Run2015B-PromptReco-v1.DoubleMuon_*", "DoubleMuon")  , 
+                sampleInfo( baseDir+"/Run2015B-PromptReco-v1.EGamma_*", "EGamma")  , 
+                sampleInfo( baseDir+"/Run2015B-PromptReco-v1.SinglePhoton_*", "SinglePhoton")  , 
+                sampleInfo( baseDir+"/Run2015B-PromptReco-v1.HTMHT_*", "HTMHT")  , 
+                sampleInfo( baseDir+"/Run2015B-PromptReco-v1.MET_*", "MET")  , 
+                sampleInfo( baseDir+"/Run2015B-PromptReco-v1.SingleElectron_*", "SingleElectron")  , 
+                sampleInfo( baseDir+"/Run2015B-PromptReco-v1.SingleMu_*", "SingleMu")  , 
+                sampleInfo( baseDir+"/Run2015B-PromptReco-v1.SingleMuon_*", "SingleMuon")  , 
+>>>>>>> 348b08bc9f70f25fa85c8b5a679cdb3c3407d986
 ]
 
 # ------------------------------------------------------------

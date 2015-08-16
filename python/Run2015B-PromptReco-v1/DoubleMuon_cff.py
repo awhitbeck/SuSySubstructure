@@ -5,12 +5,6 @@ readFiles = cms.untracked.vstring()
 secFiles = cms.untracked.vstring() 
 source = cms.Source ("PoolSource",fileNames = readFiles, secondaryFileNames = secFiles)
 readFiles.extend( [
-       '/store/data/Run2015B/DoubleMuon/MINIAOD/PromptReco-v1/000/251/560/00000/DA0DAC6D-DE29-E511-B863-02163E0133B6.root',
-       '/store/data/Run2015B/DoubleMuon/MINIAOD/PromptReco-v1/000/251/561/00000/5AC326A0-142A-E511-B70C-02163E0128E3.root',
-       '/store/data/Run2015B/DoubleMuon/MINIAOD/PromptReco-v1/000/251/562/00000/B2123D09-2A2A-E511-A6B5-02163E013674.root',
-       '/store/data/Run2015B/DoubleMuon/MINIAOD/PromptReco-v1/000/251/562/00000/B6D3043F-712A-E511-B05E-02163E01379D.root',
-       '/store/data/Run2015B/DoubleMuon/MINIAOD/PromptReco-v1/000/251/562/00000/D028B76E-702A-E511-AFAF-02163E01360E.root',
-       '/store/data/Run2015B/DoubleMuon/MINIAOD/PromptReco-v1/000/251/562/00000/D82023B7-392A-E511-85D4-02163E012601.root',
        '/store/data/Run2015B/DoubleMuon/MINIAOD/PromptReco-v1/000/251/604/00000/92E20DD1-902A-E511-8B3A-02163E012A2C.root',
        '/store/data/Run2015B/DoubleMuon/MINIAOD/PromptReco-v1/000/251/612/00000/E48F3C2B-A42A-E511-A2FB-02163E011C0F.root',
        '/store/data/Run2015B/DoubleMuon/MINIAOD/PromptReco-v1/000/251/638/00000/327469FD-0D2B-E511-96BD-02163E012B30.root',
