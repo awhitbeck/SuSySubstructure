@@ -7,7 +7,7 @@ from itertools import izip
 import array
 
 redirector = "root://cmseos.fnal.gov//"
-baseDir = "/store/user/awhitbe1/Run2015B-PromptReco_July17"
+baseDir = "/store/user/lpcsusyhad/SusyRA2Analysis2015/DPSproductionPatch2/"
 
 # ------------------------------------------------------------
 # ------------------------------------------------------------
@@ -34,14 +34,14 @@ class sampleInfo :
 # ------------------------------------------------------------
 # ------------------------------------------------------------
 
-dataSamples = [ sampleInfo( baseDir+"/Run2015B-PromptReco-v1.DoubleEG_*", "DoubleEG")  , 
-                sampleInfo( baseDir+"/Run2015B-PromptReco-v1.DoubleMuon_*", "DoubleMuon")  , 
-                sampleInfo( baseDir+"/Run2015B-PromptReco-v1.EGamma_*", "EGamma")  , 
-                sampleInfo( baseDir+"/Run2015B-PromptReco-v1.HTMHT_*", "HTMHT")  , 
-                sampleInfo( baseDir+"/Run2015B-PromptReco-v1.MET_*", "MET")  , 
-                sampleInfo( baseDir+"/Run2015B-PromptReco-v1.SingleElectron_*", "SingleElectron")  , 
-                sampleInfo( baseDir+"/Run2015B-PromptReco-v1.SingleMu_*", "SingleMu")  , 
-                sampleInfo( baseDir+"/Run2015B-PromptReco-v1.SingleMuon_*", "SingleMuon")  , 
+dataSamples = [ sampleInfo( baseDir+"/Run2015B-17Jul2015-v1.DoubleEG_*", "DoubleEG")  , 
+                sampleInfo( baseDir+"/Run2015B-17Jul2015-v1.DoubleMuon_*", "DoubleMuon")  , 
+                sampleInfo( baseDir+"/Run2015B-17Jul2015-v1.EGamma_*", "EGamma")  , 
+                sampleInfo( baseDir+"/Run2015B-17Jul2015-v1.HTMHT_*", "HTMHT")  , 
+                sampleInfo( baseDir+"/Run2015B-17Jul2015-v1.SingleElectron_*", "SingleElectron")  , 
+                sampleInfo( baseDir+"/Run2015B-17Jul2015-v1.SingleMu_*", "SingleMu")  , 
+                sampleInfo( baseDir+"/Run2015B-17Jul2015-v1.SingleMuon_*", "SingleMuon")  , 
+                sampleInfo( baseDir+"/Run2015B-17Jul2015-v1.SinglePhoton_*", "SinglePhoton")  , 
 ]
 
 # ------------------------------------------------------------
