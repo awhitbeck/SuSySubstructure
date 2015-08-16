@@ -2,7 +2,8 @@ import FWCore.ParameterSet.Config as cms
 from commandLineParameters import *
 import sys,os
 
-process = cms.Process("analysis")
+from Configuration.StandardSequences.Eras import eras
+process = cms.Process("analysis",eras.Run2_50ns)
 
 ## configure geometry & conditions
 process.load("Configuration.StandardSequences.GeometryRecoDB_cff")
@@ -38,25 +39,15 @@ elif options.scenario == "2015B":
     tagname="RECO"
     geninfo=False
     jsonfile="Cert_246908-251883_13TeV_PromptReco_Collisions15_JSON_v2.txt"
-<<<<<<< HEAD
     jecfile="Summer15_50nsV4_DATA"
     residual=True 
-=======
-    jecfile="Summer15_50nsV2_DATA"
-    residual=False
->>>>>>> 348b08bc9f70f25fa85c8b5a679cdb3c3407d986
 elif options.scenario == "re2015B":
     Global_Tag="74X_dataRun2_Prompt_v1"
     tagname="PAT"
     geninfo=False
     jsonfile="Cert_246908-251883_13TeV_PromptReco_Collisions15_JSON_v2.txt"
-<<<<<<< HEAD
     jecfile="Summer15_50nsV4_DATA"
     residual=True 
-=======
-    jecfile="Summer15_50nsV2_DATA"
-    residual=False
->>>>>>> 348b08bc9f70f25fa85c8b5a679cdb3c3407d986
 
 ###############
 # tree maker
